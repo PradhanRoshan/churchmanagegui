@@ -1,0 +1,5 @@
+/* Add padding to the bottom of the main content to prevent overlap with the sticky footer */
+.container {
+    padding-bottom: 70px; /* Height of the footer plus some extra space */
+  }
+  
