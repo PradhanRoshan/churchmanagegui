@@ -3,11 +3,13 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import { getFormControlValue, nullifyEmptyFormFields } from '../../../util/reactive-forms-util';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
+    NgIf,
     ReactiveFormsModule
   ],
   templateUrl: './login.component.html',
@@ -16,6 +18,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit{
 
   loginForm: FormGroup;
+  invalidCredentials:boolean;
 
   constructor(
     private router: Router,
@@ -42,20 +45,29 @@ export class LoginComponent implements OnInit{
       let password = getFormControlValue(this.loginForm,"password");
 
       console.log(username + password)
-      this.authService.executeAutheticationServicea(this.loginForm.value)
+      this.authService.login(this.loginForm.value)
        .subscribe(
         {
           next: (response) => {
             console.log(response); 
             this.authService.authenticateUser(username, response.token);  // Store user and token
+            console.log(this.authService.getAuthenticatedUserRole());
             this.router.navigate(['/home']);  // Navigate to a protected route
           },
-          error: (e) => console.error('Login failed', e),
+          error: (e) => {
+            this.invalidCredentials = true;
+            console.error('Login failed', e)
+          },
           complete: () => console.info('complete') 
       }
       );
     }
     
   }
+
+  onSignUpClicked() {
+    this.authService.logout();
+    this.router.navigate(['/signup']);
+    }
 
 }

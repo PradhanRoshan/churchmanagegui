@@ -24,10 +24,9 @@ export class HttpIntercepterJwtAuthService implements HttpInterceptor{
   // Handle response errors
   return next.handle(request).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && error.error?.message === 'Token expired') {
-        // If token is expired, redirect to login page
-        sessionStorage.removeItem('jwtToken');  // Remove expired token
-        this.router.navigate(['/login']);  // Redirect to login page
+      if ([401, 403].includes(error.status) && error.error?.message === 'Token expired') {
+        // If token is expired, logout and redirect to login page
+        this.authService.logout();
       }
 
       // Use a factory function in throwError to remove the deprecation warning

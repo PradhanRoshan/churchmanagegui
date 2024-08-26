@@ -1,1 +1,51 @@
-<p>signup works!</p>
+<form [formGroup] = "signUpForm"  class="row g-3 needs-validation">
+  <h1 class="h3 mb-3 fw-normal">Please sign Up</h1>
+  <div *ngIf="!isFormValid" style="color: red;">
+    Form input is invalid. Please check the field.
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">First Name</label>
+    <input required type="text" formControlName="firstName" class="form-control" id="inputEmail4">
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">Last Name</label>
+    <input type="text" formControlName="lastName" class="form-control" id="inputPassword4">
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Username</label>
+    <input type="text" formControlName="username" class="form-control" id="inputEmail4">
+    <div *ngIf="!isUsernameValid" style="color: red;">
+      Username is already taken
+    </div>
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">Email</label>
+    <input email type="email" formControlName="email" class="form-control" id="inputEmail4">
+  </div>
+  <div class="col-md-12">
+    <label for="inputPassword4" class="form-label">Password</label>
+    <input type="password" formControlName="password" class="form-control" id="inputPassword4">
+  </div>
+  <div class="col-md-12">
+    <label for="inputPassword4" class="form-label">Confirm Password</label>
+    <input type="password" formControlName="confirmPassword" class="form-control" id="inputPassword4">
+    <div *ngIf="!isPasswordValid" style="color: red;">
+      Password did not match
+    </div>
+
+  </div>
+  <!-- <div class="row"> -->
+    <div class="col-3">
+      <button class="btn btn-primary w-100 py-2" (click)="signUp()" type="submit">Submit</button>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-secondary w-100 py-2" (click)="signIn()" type="submit">Sign In</button>
+    </div>
+  <!-- </div> -->
+  
+  <!-- <div class="col-12">
+    <button type="submit" (click)="signUp()" class="btn btn-primary">Sign-Up</button>
+   &
+    <button type="submit" (click)="signUp()" class="btn btn-primary">Sign in</button>
+  </div> -->
+</form>

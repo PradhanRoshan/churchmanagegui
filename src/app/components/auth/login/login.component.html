@@ -4,7 +4,10 @@
   <form [formGroup] = "loginForm">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <div class="form-floating">
+    <div *ngIf="invalidCredentials" style="color: red;" >
+      Please choose a unique and valid username.
+    </div>
+    <div class="form-floating mb-3">
       <input required formControlName="username" type="text" class="form-control" id="floatingInput" placeholder="username">
       <label for="floatingInput">Username</label>
     </div>
@@ -19,7 +22,21 @@
         Remember me
       </label>
     </div>
-    <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign in</button>
+    <!-- <div class="input-group mb-3">
+      <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign in</button>
+      <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign-Up</button>
+    </div> -->
+
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign in</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-secondary w-100 py-2" (click)="onSignUpClicked()" type="submit">Sign-Up</button>
+      </div>
+    </div>
+
+    
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
   </form>
 
