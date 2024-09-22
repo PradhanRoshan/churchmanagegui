@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-payment-method',
@@ -7,6 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './payment-method.component.html',
   styleUrl: './payment-method.component.scss'
 })
-export class PaymentMethodComponent {
+export class PaymentMethodComponent implements OnInit{
+
+  constructor(){
+
+  }
+  
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
 
 }

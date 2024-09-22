@@ -11,6 +11,7 @@ import { NgIf } from '@angular/common';
   styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit{
+
  username: string;
 
 
@@ -18,6 +19,10 @@ export class MenuComponent implements OnInit{
   }
   ngOnInit(): void {
     this.username=this.authService.getAuthenticatedUser();
+  }
+
+  onOrderClickec() {
+    this.router.navigate(['/members']);
   }
 
   logOut() {

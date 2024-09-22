@@ -1,5 +1,10 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
+import { AuthGuard } from './components/auth/auth.guard';
+import { MemberListComponent } from './components/member/member-list/member-list.component';
+import { DashboardComponent } from './components/internal/dashboard/dashboard.component';
+import { InternalComponent } from './components/internal/internal.component';
+import { InternalHomeComponent } from './components/internal/internal-home/internal-home.component';
 
 export const routes: Routes = [
 
@@ -7,6 +12,34 @@ export const routes: Routes = [
     path: 'home',
     loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
   },
+  // {
+  //   path: 'dashboard',
+  //   loadComponent: () => import('./components/internal/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate:[AuthGuard]
+  // },
+
+  {
+    path: 'internal',
+    component: InternalComponent,canActivate:[AuthGuard],
+    children: [
+      { path: '', component: InternalHomeComponent },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'members', component: MemberListComponent },
+      {
+        path: 'address',
+        loadComponent: () => import('./components/address/address-list/address-list.component').then(m => m.AddressListComponent)
+      }
+    ]
+  },
+
+
+
+
+
+
+  // {
+  //   path: 'internal',
+  //   loadComponent: () => import('./components/internal/internal.component').then(m => m.InternalComponent), canActivate:[AuthGuard]
+  // },
   {
     path: 'signup',
     loadComponent: () => import('./components/auth/signup/signup.component').then(m => m.SignupComponent)
@@ -15,6 +48,7 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./components/auth/login/login.component').then(m => m.LoginComponent),
   },
+  // { path: 'members', component: MemberListComponent },
   {
     path: 'address',
     loadComponent: () => import('./components/address/address-list/address-list.component').then(m => m.AddressListComponent)

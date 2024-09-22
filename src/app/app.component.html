@@ -1,6 +1,6 @@
-<!--<app-header></app-header>-->
-<app-menu></app-menu>
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
-<app-footer></app-footer>
+<app-header *ngIf="showNavBar"></app-header>
+<!-- <app-menu *ngIf="!showNavBar"></app-menu> -->
+
+<!-- <app-side-nav *ngIf="!showNavBar"></app-side-nav> -->
+<router-outlet></router-outlet>
+<!-- <app-footer></app-footer> -->

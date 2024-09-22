@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-reset-password',
@@ -7,6 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss'
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnInit{
+
+  constructor(){
+
+  }
+  
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
 
 }

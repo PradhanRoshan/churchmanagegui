@@ -1,20 +1,31 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
+import { API_URL } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  API_URL = "http://localhost:8080/api";
+  API_URL = API_URL;
 
   textResponse = {
     responseType: 'text' as 'json'
   }
+  // Tracking to hide the navbar
+  private loggedIn = new BehaviorSubject<boolean> (false);
 
   constructor(private router: Router, private http: HttpClient) { }
+
+get isLoggedIn(): Observable<boolean>{
+  return this.loggedIn.asObservable();
+}
+
+updateLoggedInValue(value:boolean): void{
+  this.loggedIn.next(value);
+}
 
   // Store authenticated user and token in sessionStorage
   authenticateUser(username: string, token: string) {
@@ -27,12 +38,14 @@ export class AuthService {
     return this.http.post<AuthenticationBean>(this.API_URL + "/auth/login", payload).pipe(
       map(
         data => {
+          this.loggedIn.next(true);
           sessionStorage.setItem('jwtToken', data.token);
           sessionStorage.setItem('userRole', data.userRole);
           return data;
         }
       )
     );
+    
   }
 
   signUp(payload: any): Observable<any> {
@@ -81,10 +94,11 @@ export class AuthService {
 
   // Logout the user by removing the authenticated user and token from sessionStorage
   logout() {
+    this.loggedIn.next(false);
     sessionStorage.removeItem('authenticaterUser');
     sessionStorage.removeItem('jwtToken');
     sessionStorage.removeItem('userRole');
-    this.router.navigate(['/login']);  // Redirect to the login page
+    this.router.navigate(['/home']);  // Redirect to the login page
   }
 
 }

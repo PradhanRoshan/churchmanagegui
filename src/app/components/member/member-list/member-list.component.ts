@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-member-list',
@@ -7,6 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'
 })
-export class MemberListComponent {
+export class MemberListComponent implements OnInit{
+
+  constructor(){
+
+  }
+  
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
 
 }
