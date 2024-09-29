@@ -39,6 +39,9 @@ updateLoggedInValue(value:boolean): void{
       map(
         data => {
           this.loggedIn.next(true);
+          // traking user logged in time
+          const loginTime = new Date().getTime();
+          sessionStorage.setItem('loginTime', loginTime.toString());
           sessionStorage.setItem('jwtToken', data.token);
           sessionStorage.setItem('userRole', data.userRole);
           return data;
@@ -50,6 +53,9 @@ updateLoggedInValue(value:boolean): void{
 
   signUp(payload: any): Observable<any> {
     return this.http.post<any>(this.API_URL + "/auth/signup", payload, this.textResponse);
+  }
+  resetUserPassword(payload: { username: any; email: any; password: any; }) {
+    return this.http.post<any>(this.API_URL + "/auth/reset-password", payload, this.textResponse);
   }
 
   // Get the authenticated user's name from sessionStorage
@@ -95,6 +101,7 @@ updateLoggedInValue(value:boolean): void{
   // Logout the user by removing the authenticated user and token from sessionStorage
   logout() {
     this.loggedIn.next(false);
+    sessionStorage.removeItem('loginTime');
     sessionStorage.removeItem('authenticaterUser');
     sessionStorage.removeItem('jwtToken');
     sessionStorage.removeItem('userRole');

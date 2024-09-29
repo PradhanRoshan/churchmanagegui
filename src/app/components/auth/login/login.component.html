@@ -1,7 +1,7 @@
 
     
 <main class="form-signin w-100 m-auto">
-  <form [formGroup] = "loginForm">
+  <form [formGroup] = "loginForm" class="shadow p-3 mb-5 bg-body-tertiary rounded">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div *ngIf="invalidCredentials" style="color: red;" >
@@ -36,7 +36,11 @@
       </div>
     </div>
 
-    
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
+    <div style="padding-top: 1rem;">
+       <p><a (click)="passwordReset()" class="link-primary">Forgot password?</a></p>
+    </div>
+   
+
+    <p class="mt-5 mb-3 text-body-secondary">&copy; 2010–2024</p>
   </form>
 

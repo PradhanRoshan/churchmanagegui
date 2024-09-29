@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { getFormControlValue } from '../../../util/reactive-forms-util';
+import { getFormControlValue, nullifyEmptyFormFields } from '../../../util/reactive-forms-util';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 
@@ -28,10 +28,10 @@ export class SignupComponent implements OnInit{
   }
   
   ngOnInit(): void {
-    this.createGignUpForm();
+    this.createSignUpForm();
   }
 
-  createGignUpForm() {
+  createSignUpForm() {
     this.signUpForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -45,6 +45,7 @@ export class SignupComponent implements OnInit{
 
   signUp() {
     this.isPasswordValid = getFormControlValue(this.signUpForm,"password")===getFormControlValue(this.signUpForm,"confirmPassword")? true:false;
+    nullifyEmptyFormFields(this.signUpForm);
     if(this.signUpForm.valid && this.isPasswordValid){
       let payload ={
         firstName: getFormControlValue(this.signUpForm,"firstName"),

@@ -257,6 +257,10 @@
           />
           <strong>{{ loggedInUserName }}</strong>
         </a>
+       
+        <p style="padding-top: 1rem;"> <b>Logged in for:</b>  {{loginDuration}}</p>
+        <!-- <p>Current Time: {{ currentTime }}</p> -->
+
         <ul class="dropdown-menu text-small shadow">
           <li><a class="dropdown-item" href="#">New project...</a></li>
           <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -272,9 +276,9 @@
       <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
       >
-        <h1 class="h2">Dashboard</h1>
-        <!-- <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
+        <h1 class="h2">{{navHeadName}}</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <!-- <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">
               Share
             </button>
@@ -288,8 +292,9 @@
           >
             <svg class="bi"><use xlink:href="#calendar3" /></svg>
             This week
-          </button>
-        </div> -->
+          </button> -->
+          <p>Current Time: {{currentTime}}</p>
+        </div>
       </div>
       <router-outlet></router-outlet>
     </div>

@@ -5,6 +5,7 @@ import { MemberListComponent } from './components/member/member-list/member-list
 import { DashboardComponent } from './components/internal/dashboard/dashboard.component';
 import { InternalComponent } from './components/internal/internal.component';
 import { InternalHomeComponent } from './components/internal/internal-home/internal-home.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 
 export const routes: Routes = [
 
@@ -40,6 +41,7 @@ export const routes: Routes = [
   //   path: 'internal',
   //   loadComponent: () => import('./components/internal/internal.component').then(m => m.InternalComponent), canActivate:[AuthGuard]
   // },
+  { path: 'reset-password', component: ResetPasswordComponent },
   {
     path: 'signup',
     loadComponent: () => import('./components/auth/signup/signup.component').then(m => m.SignupComponent)
