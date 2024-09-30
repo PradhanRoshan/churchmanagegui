@@ -1,4 +1,67 @@
+<!-- <div class="b-example-divider"></div> -->
+<body style="background-color: rgba(165, 194, 198, 0.582); height: 92.9vh;">
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row flex-lg-row-reverse align-items-center mt-5 g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+      <img src="../../../assets/images/login.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+    </div>
 
+    <div class="col-md-10 mx-auto col-lg-5">
+      
+      <form [formGroup] = "loginForm" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+        <h1 class="display-5 text-center">Login Your Account</h1>
+        <hr class="border border-primary border-2 opacity-75" />
+
+        <div *ngIf="!isFormValid" class="alert alert-danger" role="alert">
+          Form input is invalid. Please check the field.
+        </div>
+
+        <div *ngIf="!invalidCredentials" class="alert alert-danger" role="alert">
+          Please choose a unique and valid username.
+        </div>
+        
+        <div class="form-floating mb-3">
+          <input formControlName="username" type="text" class="form-control" id="floatingInput" placeholder="Username">
+          <label for="floatingInput">Username</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input formControlName="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign in</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-secondary w-100 py-2" (click)="onSignUpClicked()" type="submit">Sign-Up</button>
+          </div>
+        </div>
+
+        <!-- <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button> -->
+
+        <div style="padding-top: .5rem;">
+          <p><a (click)="passwordReset()" class="link-primary">Forgot Your Password?</a></p>
+       </div>
+        <hr class="my-4">
+        <small class="text-body-secondary">&copy;2010–2024, roshanpradhan.com</small>
+      </form>
+    </div>
+
+  </div>
+</div>
+</body>
+
+
+
+
+<!-- 
     
 <main class="form-signin w-100 m-auto">
   <form [formGroup] = "loginForm" class="shadow p-3 mb-5 bg-body-tertiary rounded">
@@ -22,10 +85,6 @@
         Remember me
       </label>
     </div>
-    <!-- <div class="input-group mb-3">
-      <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign in</button>
-      <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign-Up</button>
-    </div> -->
 
     <div class="row">
       <div class="col">
@@ -43,4 +102,4 @@
 
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2010–2024</p>
   </form>
-
+ -->

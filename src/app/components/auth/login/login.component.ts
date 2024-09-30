@@ -18,7 +18,8 @@ import { NgIf } from '@angular/common';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  invalidCredentials: boolean;
+  invalidCredentials: boolean=true;
+  isFormValid: boolean=true;
 
   constructor(
     private router: Router,
@@ -39,7 +40,10 @@ export class LoginComponent implements OnInit {
 
   onSignInClicked() {
     nullifyEmptyFormFields(this.loginForm);
+    console.log(this.isFormValid)
+    console.log(this.loginForm.valid)
     if (this.loginForm.valid) {
+      this.isFormValid = true;
       console.log(this.loginForm.value)
       let username = getFormControlValue(this.loginForm, "username");
       let password = getFormControlValue(this.loginForm, "password");
@@ -56,12 +60,15 @@ export class LoginComponent implements OnInit {
              
             },
             error: (e) => {
-              this.invalidCredentials = true;
+              this.invalidCredentials = false;
               console.error('Login failed', e)
             },
             complete: () => console.info('complete')
           }
         );
+    }else {
+      this.isFormValid = false;
+      this.invalidCredentials = true;
     }
 
   }
