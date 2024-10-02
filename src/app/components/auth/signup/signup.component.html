@@ -11,7 +11,9 @@
 
       <div class="col-md-10 mx-auto col-lg-8">
         <form [formGroup]="signUpForm" class="p-4 p-md-4 border rounded-3 bg-body-tertiary">
-          <h1 class="display-4 text-center">Please sign Up</h1>
+          <!-- <h1 class="display-4 text-center">Please sign Up</h1> -->
+          <h1 class="card-title text-center pb-0 fs-1">Create an Account</h1>
+          <p class="text-center large">Enter your personal details to create account</p>
           <hr class="border border-primary border-2 opacity-75" />
 
           <div *ngIf="!isFormValid" class="alert alert-danger" role="alert">
@@ -84,15 +86,25 @@
 
           <div class="checkbox mb-3">
             <label>
-              <input type="checkbox" value="remember-me"> Remember me
+              <input required type="checkbox" value="remember-me"> I agree and accept the <a href="#">terms and conditions</a>
             </label>
+            <div class="invalid-feedback">You must agree before submitting.</div>
           </div>
-          <button (click)="signUp()" class="w-100 btn btn-lg btn-primary" type="submit">
-            Sign up
-          </button>
-          
+          <!-- <button (click)="signUp()" class="w-100 btn btn-lg btn-primary" type="submit">
+            Create Account
+          </button> -->
+
+          <div class="col-12">
+            <button (click)="signUp()" class="w-100 btn btn-lg btn-primary" type="submit">
+              Create Account
+            </button>
+          </div>
+
+          <div class="col-12 pt-3">
+            <p class="large mb-0">Already have an account? <a (click)="signIn()" class="link-primary">Log in</a></p>
+          </div>
           <hr class="my-4" />
-          <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+          <small class="text-body-secondary">By clicking Create Account, you agree to the terms of use.</small>
         </form>
       </div>
     </div>

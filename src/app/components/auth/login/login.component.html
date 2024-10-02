@@ -1,5 +1,5 @@
 <!-- <div class="b-example-divider"></div> -->
-<body style="background-color: rgba(165, 194, 198, 0.582); height: 92.9vh;">
+<main style="background-color: rgba(165, 194, 198, 0.582); height: 92.9vh;">
 <div class="container col-xxl-8 px-4 py-5">
   <div class="row flex-lg-row-reverse align-items-center mt-5 g-5 py-5">
     <div class="col-10 col-sm-8 col-lg-6">
@@ -9,7 +9,8 @@
     <div class="col-md-10 mx-auto col-lg-5">
       
       <form [formGroup] = "loginForm" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
-        <h1 class="display-5 text-center">Login Your Account</h1>
+        <h1 class="card-title text-center pb-0 fs-1">Login to Your Account</h1>
+        <p class="text-center small">Enter your username &amp; password to login</p>
         <hr class="border border-primary border-2 opacity-75" />
 
         <div *ngIf="!isFormValid" class="alert alert-danger" role="alert">
@@ -37,26 +38,35 @@
 
         <div class="row">
           <div class="col">
-            <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Sign in</button>
-          </div>
+            <button class="btn btn-primary w-100 py-2" (click)="onSignInClicked()" type="submit">Login</button>
+          <!-- </div>
           <div class="col">
-            <button class="btn btn-secondary w-100 py-2" (click)="onSignUpClicked()" type="submit">Sign-Up</button>
+            <button class="btn btn-secondary w-100 py-2" (click)="onSignUpClicked()" type="submit">Sign-Up</button> -->
           </div>
         </div>
 
         <!-- <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button> -->
 
-        <div style="padding-top: .5rem;">
+        <!-- <div style="padding-top: .5rem;">
           <p><a (click)="passwordReset()" class="link-primary">Forgot Your Password?</a></p>
-       </div>
+       </div> -->
+
+       <div style="padding-top: 1rem;" class="col-12">
+        <p class="small mb-0">Forgot Your Password? <a (click)="passwordReset()" class="link-primary">Reset Password</a></p>
+      </div>
         <hr class="my-4">
-        <small class="text-body-secondary">&copy;2010–2024, roshanpradhan.com</small>
+
+        <div class=" text-center">
+          Designed by <a href="https://roshanpradhan.com/">RoshanPradhan</a>
+        </div>
+
+        <!-- <small class="text-body-secondary">&copy;2010–2024, roshanpradhan.com</small> -->
       </form>
     </div>
 
   </div>
 </div>
-</body>
+</main>
 
 
 
