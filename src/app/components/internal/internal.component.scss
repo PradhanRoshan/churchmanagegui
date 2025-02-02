@@ -1,0 +1,45 @@
+main{
+    position: absolute;
+    width: 100%;
+    top: 0rem;
+    z-index: 1;
+  }
+
+  app-side-nav {
+    position: absolute;
+    left: 0rem;
+    width: 280px;
+    height: calc(100vh - 0rem);
+    box-shadow: 0px 0px 10px;
+  }
+
+  .display-area{
+    position: absolute;
+    left: 280px;
+    width: calc(100% - 280px);
+  }
+
+ 
+  // main {
+  //   display: flex;
+  // }
+
+  // app-side-nav {
+  //   width: 250px;
+  // }
+
+  // .display-area {
+  //   flex-grow: 1;
+  //   padding: 20px;
+  // }
+
+  // @media (max-width: 768px) {
+  //   app-side-nav {
+  //     width: 100%;
+  //   }
+
+  //   main {
+  //     flex-direction: column;
+  //   }
+  // }
+  

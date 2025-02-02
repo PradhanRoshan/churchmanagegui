@@ -19,8 +19,8 @@ import { NgIf } from '@angular/common';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  invalidCredentials: boolean=true;
-  isFormValid: boolean=true;
+  invalidCredentials: boolean = true;
+  isFormValid: boolean = true;
 
   constructor(
     private router: Router,
@@ -54,11 +54,22 @@ export class LoginComponent implements OnInit {
         .subscribe(
           {
             next: (response) => {
-              console.log(response);
+
+              console.log("myResponse:", response);
+
               this.authService.authenticateUser(username, response.token);  // Store user and token
-              console.log(this.authService.getAuthenticatedUserRole());
+              // console.log(this.authService.getAuthenticatedUserRole());
+
+              console.log("response.userDetialsDto.address:", response.userDetialsDto.address);
+
+              // if (response.userDetialsDto.address == null) {
+
+              //   console.log("Address is null:");
+
+              // } else {
               this.router.navigate(['/internal']);  // Navigate to a protected route
-             
+              // }
+
             },
             error: (e) => {
               this.invalidCredentials = false;
@@ -67,7 +78,7 @@ export class LoginComponent implements OnInit {
             complete: () => console.info('complete')
           }
         );
-    }else {
+    } else {
       this.isFormValid = false;
       this.invalidCredentials = true;
     }

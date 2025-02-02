@@ -43,7 +43,9 @@ updateLoggedInValue(value:boolean): void{
           const loginTime = new Date().getTime();
           sessionStorage.setItem('loginTime', loginTime.toString());
           sessionStorage.setItem('jwtToken', data.token);
-          sessionStorage.setItem('userRole', data.userRole);
+          // sessionStorage.setItem('userRole', data.userRole);
+          let userDetials = JSON.stringify(data.userDetialsDto);
+          sessionStorage.setItem('userDetials',userDetials );
           return data;
         }
       )
@@ -54,7 +56,7 @@ updateLoggedInValue(value:boolean): void{
   signUp(payload: any): Observable<any> {
     return this.http.post<any>(this.API_URL + "/auth/signup", payload, this.textResponse);
   }
-  resetUserPassword(payload: { username: any; email: any; password: any; }) {
+  resetUserPassword(payload: any) {
     return this.http.post<any>(this.API_URL + "/auth/reset-password", payload, this.textResponse);
   }
 
@@ -68,29 +70,29 @@ updateLoggedInValue(value:boolean): void{
     return this.getAuthenticatedUser() ? sessionStorage.getItem('jwtToken') : null;
   }
   // Get the JWT token from sessionStorage if the user is authenticated
-  getAuthenticatedUserRole() {
-    let userRole: any;
-    if(this.getAuthenticatedUser()){
-      switch (sessionStorage.getItem('userRole')) {
-        case "1":
-          userRole="Admin";
-          break;
-        case "2":
-          userRole="Member";
-          break;
-        case "3":
-          userRole="Volunteer";
-          break;
+  // getAuthenticatedUserRole() {
+  //   let userRole: any;
+  //   if(this.getAuthenticatedUser()){
+  //     switch (sessionStorage.getItem('userRole')) {
+  //       case "1":
+  //         userRole="Admin";
+  //         break;
+  //       case "2":
+  //         userRole="Member";
+  //         break;
+  //       case "3":
+  //         userRole="Volunteer";
+  //         break;
       
-        default:
-          userRole="Unknown Role";
-          break;
-      }
+  //       default:
+  //         userRole="Unknown Role";
+  //         break;
+  //     }
 
-    }
-    return userRole;
-    // return this.getAuthenticatedUser() ? sessionStorage.getItem('userRole') : null;
-  }
+  //   }
+  //   return userRole;
+  //   // return this.getAuthenticatedUser() ? sessionStorage.getItem('userRole') : null;
+  // }
 
   // Check if a user is logged in by verifying the presence of the authenticated user in sessionStorage
   isUserLoggedIn() {
@@ -104,7 +106,8 @@ updateLoggedInValue(value:boolean): void{
     sessionStorage.removeItem('loginTime');
     sessionStorage.removeItem('authenticaterUser');
     sessionStorage.removeItem('jwtToken');
-    sessionStorage.removeItem('userRole');
+    // sessionStorage.removeItem('userRole');
+    sessionStorage.removeItem('userDetials');
     this.router.navigate(['/home']);  // Redirect to the login page
   }
 
@@ -112,6 +115,7 @@ updateLoggedInValue(value:boolean): void{
 export class AuthenticationBean {
   //  jwtToken:string;
   userRole: string;
+  userDetialsDto: any;
   constructor(public token: string) {
 
   }

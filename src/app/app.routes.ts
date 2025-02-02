@@ -20,11 +20,19 @@ export const routes: Routes = [
 
   {
     path: 'internal',
-    component: InternalComponent,canActivate:[AuthGuard],
+    component: InternalComponent, canActivate: [AuthGuard],
     children: [
       { path: '', component: InternalHomeComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'members', component: MemberListComponent },
+      {
+        path: 'profile',
+        loadComponent: () => import('./components/auth/profile/profile.component').then(m => m.ProfileComponent),
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./components/auth/settings/settings.component').then(m => m.SettingsComponent),
+      },
       {
         path: 'address',
         loadComponent: () => import('./components/address/address-list/address-list.component').then(m => m.AddressListComponent)
@@ -65,25 +73,25 @@ export const routes: Routes = [
   // },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'page-not-found' }
-    // { path: 'login', component: LoginComponent },
-    // { path: 'logout', component: LoginComponent },
-    // { path: 'addresses', component: AddressListComponent },
-    // { path: 'address/:id', component: AddressDetailComponent },
-    // { path: 'address-form', component: AddressFormComponent },
-    // { path: 'churches', component: ChurchListComponent },
-    // { path: 'church/:id', component: ChurchDetailComponent },
-    // { path: 'church-form', component: ChurchFormComponent },
-    // { path: 'members', component: MemberListComponent },
-    // { path: 'member/:id', component: MemberDetailComponent },
-    // { path: 'member-form', component: MemberFormComponent },
-    // { path: 'events', component: EventListComponent },
-    // { path: 'event/:id', component: EventDetailComponent },
-    // { path: 'event-form', component: EventFormComponent },
-    // { path: 'tithes-offerings', component: TitheAndOfferingListComponent },
-    // { path: 'tithe-offering/:id', component: TitheAndOfferingDetailComponent },
-    // { path: 'tithe-offering-form', component: TitheAndOfferingFormComponent },
-    // { path: 'login', component: LoginComponent },
-    // { path: 'signup', component: SignupComponent },
-    // { path: 'reset-password', component: ResetPasswordComponent },
-    // { path: '', redirectTo: '/addresses', pathMatch: 'full' }, // Default route
+  // { path: 'login', component: LoginComponent },
+  // { path: 'logout', component: LoginComponent },
+  // { path: 'addresses', component: AddressListComponent },
+  // { path: 'address/:id', component: AddressDetailComponent },
+  // { path: 'address-form', component: AddressFormComponent },
+  // { path: 'churches', component: ChurchListComponent },
+  // { path: 'church/:id', component: ChurchDetailComponent },
+  // { path: 'church-form', component: ChurchFormComponent },
+  // { path: 'members', component: MemberListComponent },
+  // { path: 'member/:id', component: MemberDetailComponent },
+  // { path: 'member-form', component: MemberFormComponent },
+  // { path: 'events', component: EventListComponent },
+  // { path: 'event/:id', component: EventDetailComponent },
+  // { path: 'event-form', component: EventFormComponent },
+  // { path: 'tithes-offerings', component: TitheAndOfferingListComponent },
+  // { path: 'tithe-offering/:id', component: TitheAndOfferingDetailComponent },
+  // { path: 'tithe-offering-form', component: TitheAndOfferingFormComponent },
+  // { path: 'login', component: LoginComponent },
+  // { path: 'signup', component: SignupComponent },
+  // { path: 'reset-password', component: ResetPasswordComponent },
+  // { path: '', redirectTo: '/addresses', pathMatch: 'full' }, // Default route
 ];
