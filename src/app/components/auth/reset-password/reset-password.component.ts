@@ -4,31 +4,33 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { getFormControlValue, nullifyEmptyFormFields } from '../../../util/reactive-forms-util';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [NgIf,FormsModule,ReactiveFormsModule],
+  imports: [NgIf, FormsModule, ReactiveFormsModule],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',
   // encapsulation: ViewEncapsulation.None
 })
-export class ResetPasswordComponent implements OnInit{
+export class ResetPasswordComponent implements OnInit {
 
 
   resetPswdForm: FormGroup;
-  isNewPasswordValid: boolean=true;
-  isUsernameValid: boolean=true;
-  isFormValid: boolean=true;
+  isNewPasswordValid: boolean = true;
+  isUsernameValid: boolean = true;
+  isFormValid: boolean = true;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService :AuthService,
-  ){
+    private authService: AuthService,
+    private http: HttpClient
+  ) {
 
   }
-  
+
   ngOnInit(): void {
     this.createPswdResetFormForm();
   }
@@ -43,47 +45,47 @@ export class ResetPasswordComponent implements OnInit{
 
   onResetClicked() {
     nullifyEmptyFormFields(this.resetPswdForm);
-    this.isNewPasswordValid = getFormControlValue(this.resetPswdForm,"newPassword")===getFormControlValue(this.resetPswdForm,"newCnfrmPassword")? true:false;
-    if(this.resetPswdForm.valid && this.isNewPasswordValid){
+    this.isNewPasswordValid = getFormControlValue(this.resetPswdForm, "newPassword") === getFormControlValue(this.resetPswdForm, "newCnfrmPassword") ? true : false;
+    if (this.resetPswdForm.valid && this.isNewPasswordValid) {
       this.isFormValid = true;
       console.log(this.resetPswdForm.value)
       let payload = {
-          username: getFormControlValue(this.resetPswdForm,"username"),
-          email: getFormControlValue(this.resetPswdForm,"email"),
-          password: getFormControlValue(this.resetPswdForm,"newPassword"),
+        username: getFormControlValue(this.resetPswdForm, "username"),
+        email: getFormControlValue(this.resetPswdForm, "email"),
+        password: getFormControlValue(this.resetPswdForm, "newPassword"),
       }
 
       this.authService.resetUserPassword(payload)
-      .subscribe(
-        {
-          next: (response) => {
-            console.log(response);
-            if(response=="User not found"){
-              this.isUsernameValid=false;
-              return;
-            } else if(response=="Password changed successfully"){
-              this.isUsernameValid=true;
-              this.router.navigate(['/login']);
-            }
-            // this.authService.authenticateUser(username, response.token);  // Store user and token
-            // console.log(this.authService.getAuthenticatedUserRole());
+        .subscribe(
+          {
+            next: (response) => {
+              console.log(response);
+              if (response == "User not found") {
+                this.isUsernameValid = false;
+                return;
+              } else if (response == "Password changed successfully") {
+                this.isUsernameValid = true;
+                this.router.navigate(['/login']);
+              }
+              // this.authService.authenticateUser(username, response.token);  // Store user and token
+              // console.log(this.authService.getAuthenticatedUserRole());
 
-           
-          },
-          error: (e) => {
-            // this.invalidCredentials = true;
-            console.error('Login failed', e)
-          },
-          complete: () => console.info('complete')
-        }
-      );
+
+            },
+            error: (e) => {
+              // this.invalidCredentials = true;
+              console.error('Login failed', e)
+            },
+            complete: () => console.info('complete')
+          }
+        );
 
       console.log(payload)
 
-    }else {
+    } else {
       this.isFormValid = false;
     }
 
-    }
+  }
 
 }

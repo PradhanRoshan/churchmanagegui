@@ -68,6 +68,7 @@ export class SideNavComponent implements OnInit, OnDestroy {
     this.router.navigate(['/internal/settings']);
   }
   onProfileClick() {
+    console.log("Profile Clicked");
     this.sideNavService.updateSideNavTabValue("Profile");
     this.router.navigate(['/internal/profile']);
   }

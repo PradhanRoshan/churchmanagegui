@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, catchError } from 'rxjs';
 import { API_URL } from '../../environments/environment';
 
 @Injectable({
@@ -14,18 +14,19 @@ export class AuthService {
   textResponse = {
     responseType: 'text' as 'json'
   }
-  // Tracking to hide the navbar
-  private loggedIn = new BehaviorSubject<boolean> (false);
+
+  // Track logged-in state
+  private loggedIn = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 
   constructor(private router: Router, private http: HttpClient) { }
 
-get isLoggedIn(): Observable<boolean>{
-  return this.loggedIn.asObservable();
-}
+  get isLoggedIn(): Observable<boolean> {
+    return this.loggedIn.asObservable();
+  }
 
-updateLoggedInValue(value:boolean): void{
-  this.loggedIn.next(value);
-}
+  updateLoggedInValue(value: boolean): void {
+    this.loggedIn.next(value);
+  }
 
   // Store authenticated user and token in sessionStorage
   authenticateUser(username: string, token: string) {
@@ -34,70 +35,58 @@ updateLoggedInValue(value:boolean): void{
   }
 
   login(payload: any): Observable<AuthenticationBean> {
-
     return this.http.post<AuthenticationBean>(this.API_URL + "/auth/login", payload).pipe(
-      map(
-        data => {
-          this.loggedIn.next(true);
-          // traking user logged in time
-          const loginTime = new Date().getTime();
-          sessionStorage.setItem('loginTime', loginTime.toString());
-          sessionStorage.setItem('jwtToken', data.token);
-          // sessionStorage.setItem('userRole', data.userRole);
-          let userDetials = JSON.stringify(data.userDetialsDto);
-          sessionStorage.setItem('userDetials',userDetials );
-          return data;
-        }
-      )
+      map(data => {
+        this.loggedIn.next(true);
+        const loginTime = new Date().getTime();
+        this.authenticateUser(data.userDetialsDto.username, data.token);
+        sessionStorage.setItem('loginTime', loginTime.toString());
+        sessionStorage.setItem('userDetials', JSON.stringify(data.userDetialsDto));
+        console.log('JWT Token stored:', data.token);
+        return data;
+      }),
+      catchError(error => {
+        console.error('Login failed:', error);
+        throw error;
+      })
     );
-    
   }
 
   signUp(payload: any): Observable<any> {
     return this.http.post<any>(this.API_URL + "/auth/signup", payload, this.textResponse);
   }
+
   resetUserPassword(payload: any) {
     return this.http.post<any>(this.API_URL + "/auth/reset-password", payload, this.textResponse);
   }
 
   // Get the authenticated user's name from sessionStorage
-  getAuthenticatedUser() {
-    return sessionStorage.getItem('authenticaterUser')
+  getAuthenticatedUser(): string | null {
+    return sessionStorage.getItem('authenticaterUser');
   }
 
   // Get the JWT token from sessionStorage if the user is authenticated
-  getAuthenticatedToken() {
-    return this.getAuthenticatedUser() ? sessionStorage.getItem('jwtToken') : null;
-  }
-  // Get the JWT token from sessionStorage if the user is authenticated
-  // getAuthenticatedUserRole() {
-  //   let userRole: any;
-  //   if(this.getAuthenticatedUser()){
-  //     switch (sessionStorage.getItem('userRole')) {
-  //       case "1":
-  //         userRole="Admin";
-  //         break;
-  //       case "2":
-  //         userRole="Member";
-  //         break;
-  //       case "3":
-  //         userRole="Volunteer";
-  //         break;
-      
-  //       default:
-  //         userRole="Unknown Role";
-  //         break;
-  //     }
+  getAuthenticatedToken(): string | null {
+    const user = this.getAuthenticatedUser();
+    if (!user) {
+      console.log('No authenticated user found');
+      return null;
+    }
 
-  //   }
-  //   return userRole;
-  //   // return this.getAuthenticatedUser() ? sessionStorage.getItem('userRole') : null;
-  // }
+    const token = sessionStorage.getItem('jwtToken');
+    if (!token) {
+      console.log('No JWT token found for the authenticated user');
+      return null;
+    }
+
+    console.log('Retrieved JWT Token:', token);
+    return token;
+  }
 
   // Check if a user is logged in by verifying the presence of the authenticated user in sessionStorage
-  isUserLoggedIn() {
+  isUserLoggedIn(): boolean {
     const user = sessionStorage.getItem('authenticaterUser');
-    return !(user === null);  // Returns true if user is logged in, false otherwise
+    return !!user;  // Returns true if user is logged in, false otherwise
   }
 
   // Logout the user by removing the authenticated user and token from sessionStorage
@@ -106,17 +95,13 @@ updateLoggedInValue(value:boolean): void{
     sessionStorage.removeItem('loginTime');
     sessionStorage.removeItem('authenticaterUser');
     sessionStorage.removeItem('jwtToken');
-    // sessionStorage.removeItem('userRole');
     sessionStorage.removeItem('userDetials');
-    this.router.navigate(['/home']);  // Redirect to the login page
+    this.router.navigate(['/home']);  // Redirect to the home page
   }
-
 }
-export class AuthenticationBean {
-  //  jwtToken:string;
-  userRole: string;
-  userDetialsDto: any;
-  constructor(public token: string) {
 
-  }
+export class AuthenticationBean {
+  userRole?: string;
+  userDetialsDto?: any;
+  constructor(public token: string) { }
 }

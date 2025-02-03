@@ -61,7 +61,7 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  onPasswordResetClicked() {
+  onPasswordResetClicked() { 
     console.log("reset: ",this.resetPswdForm.value)
     nullifyEmptyFormFields(this.resetPswdForm);
     // this.isNewPasswordValid = ;
@@ -114,10 +114,6 @@ export class ProfileComponent implements OnInit {
       
     }
 
-
-
     }
-
-
 
 }
