@@ -1,1 +1,267 @@
-<p>member-list works!</p>
+<div class="container-fluid mt-5">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="new-application-tab" data-bs-toggle="tab"
+          data-bs-target="#new-application" type="button" role="tab"
+          aria-controls="new-application" aria-selected="true"
+          (click)="fetchData('new')">
+          New Application
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="inprogress-tab" data-bs-toggle="tab"
+          data-bs-target="#inprogress" type="button" role="tab"
+          aria-controls="inprogress" aria-selected="false"
+          (click)="fetchData('inprogress')">
+          In Progress
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="approved-tab" data-bs-toggle="tab"
+          data-bs-target="#approved" type="button" role="tab"
+          aria-controls="approved" aria-selected="false"
+          (click)="fetchData('approved')">
+          Approved
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="rejected-tab" data-bs-toggle="tab"
+          data-bs-target="#rejected" type="button" role="tab"
+          aria-controls="rejected" aria-selected="false"
+          (click)="fetchData('rejected')">
+          Rejected
+        </button>
+      </li>
+    </ul>
+  
+    <div class="tab-content" id="myTabContent">
+    <!-- New Applications Tab -->
+<div class="tab-pane fade show active" id="new-application" role="tabpanel" aria-labelledby="new-application-tab">
+  <table class="table table-hover mt-3">
+    <thead>
+      <tr>
+        <th scope="col">Member Id</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Role</th>
+        <th scope="col">Application Status</th>
+        <th scope="col">Date Submitted</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let app of newApplications">
+        <td>{{ app.userMember.memberId }}</td>
+        <td>{{ app.userMember.firstName + " " + app.userMember.lastName }}</td>
+        <td>{{ app.role.roleName }}</td>
+        <td [ngClass]="{ 'text-primary fw-bold': app.applicationStatus.statusName === 'Submitted' }">
+          {{ app.applicationStatus.statusName }}
+        </td>
+        <td>{{ app.userMember.dttmCreate }}</td>
+        <td>
+          <button (click)="performAction(app, 'Submitted')" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newApplModal">Review</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+      <!-- In Progress Tab -->
+      <div class="tab-pane fade" id="inprogress" role="tabpanel" aria-labelledby="inprogress-tab">
+        <table class="table table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Member Id</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Role</th>
+              <th scope="col">Application Status</th>
+              <th scope="col">Date Submitted</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of inProgressApplications">
+                <td>{{ app.userMember.memberId }}</td>
+                <td>{{ app.userMember.firstName +" "+ app.userMember.lastName }}</td>
+                <td>{{ app.role.roleName }}</td>
+                <td [ngClass]="{
+                    'text-warning fw-bold': app.applicationStatus.statusName === 'In Progress'
+                  }">
+                    {{ app.applicationStatus.statusName }}
+                  </td>
+                <!-- <td>{{ app.applicationStatus.statusName }}</td> -->
+                <td>{{ app.userMember.dttmCreate }}</td>
+              <td>
+                <button (click)="performAction(app,'In Progress')" class="btn btn-primary btn-sm" >Action</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Approved Tab -->
+      <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+        <table class="table table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Member Id</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Role</th>
+              <th scope="col">Application Status</th>
+              <th scope="col">Date Submitted</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of approvedApplications">
+                <td>{{ app.userMember.memberId }}</td>
+                <td>{{ app.userMember.firstName +" "+ app.userMember.lastName }}</td>
+                <td>{{ app.role.roleName }}</td>
+                <td [ngClass]="{
+                    'text-success fw-bold': app.applicationStatus.statusName === 'Approved'
+                  }">
+                    {{ app.applicationStatus.statusName }}
+                  </td>
+                <!-- <td>{{ app.applicationStatus.statusName }}</td> -->
+                <td>{{ app.userMember.dttmCreate }}</td>
+              <td>
+                <button (click)="performAction(app,'Approved')" class="btn btn-primary btn-sm">Action</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Reject Tab -->
+      <div class="tab-pane fade" id="rejected" role="tabpanel" aria-labelledby="rejected-tab">
+        <table class="table table-hover mt-3">
+          <thead>
+            <tr>
+              <th scope="col">Member Id</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Role</th>
+              <th scope="col">Application Status</th>
+              <th scope="col">Date Submitted</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let app of rejectedApplications">
+                <td>{{ app.userMember.memberId }}</td>
+                <td>{{ app.userMember.firstName +" "+ app.userMember.lastName }}</td>
+                <td>{{ app.role.roleName }}</td>
+                <td [ngClass]="{
+                    'text-danger fw-bold': app.applicationStatus.statusName === 'Rejected'
+                  }">
+                    {{ app.applicationStatus.statusName }}
+                  </td>
+                <!-- <td>{{ app.applicationStatus.statusName }}</td> -->
+                <td>{{ app.userMember.dttmCreate }}</td>
+              <td>
+                <button (click)="performAction(app,'Rejected')" class="btn btn-primary btn-sm">Action</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade" #newApplModal id="newApplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newApplModalLabel" aria-hidden="true" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="newApplModalLabel">Review Member Details</h1>
+        <button (click)="onModalXClose(selectedObj)" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="row g-2">
+            <div class="col-md">
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control-plaintext" id="memberId" [value]="selectedObj?.userMember.memberId" readonly>
+                <label for="memberId">Member ID</label>
+              </div>
+
+
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control-plaintext" id="status" [value]="selectedObj?.applicationStatus.statusName" [ngClass]="{
+                'text-primary fw-bold': selectedObj?.applicationStatus.statusName === 'Submitted',
+                'text-warning fw-bold': selectedObj?.applicationStatus.statusName === 'In Progress',
+                'text-success fw-bold': selectedObj?.applicationStatus.statusName === 'Approved',
+                'text-danger fw-bold': selectedObj?.applicationStatus.statusName === 'Rejected'
+                }" readonly>
+                <label for="status">Status</label>
+              </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2">
+            <div class="col-md">
+
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control-plaintext" id="firstName" [value]="selectedObj?.userMember.firstName" readonly>
+                <label for="firstName">First Name</label>
+              </div>
+
+
+            </div>
+            <div class="col-md">
+              <div class="form-floating">
+
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control-plaintext" id="lastName" [value]="selectedObj?.userMember.lastName" readonly>
+                  <label for="lastName">Last Name</label>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2">
+            <div class="col-md">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control-plaintext" id="currentRole" [value]="defaultRoleName" readonly>
+                <label for="currentRole">Current Role</label>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control-plaintext" id="currentEmail" [value]="selectedObj?.userMember.emailId" readonly>
+                <label for="currentEmail">Email</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-2">
+            <div class="col-md">
+              <div class="form-floating">
+                <select class="form-select" id="newRole" [(ngModel)]="selectedRoleId" name="newRole" (change)="updateRole($event)" required>
+                  <option disabled selected value="">Open this select menu</option>
+                  <option *ngFor="let role of roles" [value]="role.roleId">{{ role.roleName }}</option>
+                </select>
+                <label for="newRole">Selects New Role</label>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onModalXClose(selectedObj)">Close</button>
+        <button (click)="startApplication(selectedObj)" type="button" data-bs-dismiss="modal" class="btn btn-primary">Reviewed</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 

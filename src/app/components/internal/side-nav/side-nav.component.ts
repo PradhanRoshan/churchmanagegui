@@ -4,16 +4,19 @@ import { AuthService } from '../../../services/auth.service';
 import { SideNavService } from '../../../services/side-nav.service';
 import { NgIf } from '@angular/common';
 import { EntitlementService } from '../../../services/entitlement.service';
+import { MemberService } from '../../../services/member.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-side-nav',
   standalone: true,
   imports: [RouterOutlet,NgIf],
   templateUrl: './side-nav.component.html',
-  styleUrl: './side-nav.component.scss'
+  styleUrls: ['./side-nav.component.scss']
 })
 export class SideNavComponent implements OnInit, OnDestroy {
 
+  private destroy$ = new Subject<void>();
   loggedInUserName: string = "";
   navHeadName: string = "";
 
@@ -23,8 +26,10 @@ export class SideNavComponent implements OnInit, OnDestroy {
 
   isUserRoleAdmin: boolean = false;
 
+  newApplicationsCount: number = 0;
 
   constructor(private router: Router,
+    private memberService :MemberService,
     private authService: AuthService,
     private entitlementService: EntitlementService,
     private sideNavService: SideNavService) {
@@ -33,14 +38,19 @@ export class SideNavComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isUserRoleAdmin = this.entitlementService.isUserRoleAdmin();
     this.loggedInUserName = this.authService.getAuthenticatedUser();
-    this.sideNavService.sideNavTabName.subscribe(data => {
+    
+    this.memberService.newApplicationCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
+      this.newApplicationsCount = count;
+    });
+
+    this.sideNavService.sideNavTabName.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.navHeadName = data;
     });
     this.onHomeClick();
     this.userLoggedInTime();
   }
 
-  // Nevigation Functions
+  // Navigation Functions
   onApplicationClicked() {
     this.sideNavService.updateSideNavTabValue("Applications");
     this.router.navigate(['/internal/members']);
@@ -119,6 +129,8 @@ export class SideNavComponent implements OnInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId); // Clear the interval when the component is destroyed
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

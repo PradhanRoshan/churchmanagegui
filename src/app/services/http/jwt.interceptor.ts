@@ -27,10 +27,19 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
-            console.error('Interceptor error:', error);
+            console.error('🔍 Raw error response:', JSON.stringify(error.error));
+            // console.error('🔍 JSON.parse response:', JSON.parse(error.error));
+            const errorString = JSON.stringify(error.error);
+            const parsedError = JSON.parse(errorString);
 
-            if ([401, 403].includes(error.status) && error.error?.message === 'Token expired') {
-                console.log('🔄 Token expired - Logging out...');
+
+            console.log('[401, 403, 500].includes(parsedError.status):', [401, 403, 500].includes(Number(parsedError.status)));
+            console.log('includes(parsedError.status):', ['Invalid JWT signature','Invalid JWT','JWT expired'].includes(parsedError.error));
+
+
+            if ([401, 403].includes(Number(parsedError.status)) && ['Invalid JWT signature','Invalid JWT','JWT expired'].includes(parsedError.error)) {
+                console.log('🔄'+ parsedError.error +'- Logging out...');
+                alert('Token expired - Logging out...');
                 authService.logout();
                 router.navigate(['/login']);
             }

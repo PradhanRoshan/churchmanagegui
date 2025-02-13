@@ -15,6 +15,27 @@ export class AuthService {
     responseType: 'text' as 'json'
   }
 
+  // Store loggined User Role in BehaviorSubject
+  // This BehaviorSubject can be used to track the user's role throughout the application
+  private userRole = new BehaviorSubject<string | null>(null);
+
+  // Get user role as an observable
+  // This observable can be used to subscribe to role changes
+  // and react to role changes in the application
+  // For example, you can use it to conditionally render UI elements based on the user's role
+   userRole$ = this.userRole.asObservable();
+
+  getUserRole(): Observable<string | null> {
+    return this.userRole.asObservable();
+  }
+
+  // Update user role
+  setUserRole(role: string | null): void {
+    this.userRole.next(role);
+  }
+
+
+
   // Track logged-in state
   private loggedIn = new BehaviorSubject<boolean>(this.isUserLoggedIn());
 
@@ -38,6 +59,7 @@ export class AuthService {
     return this.http.post<AuthenticationBean>(this.API_URL + "/auth/login", payload).pipe(
       map(data => {
         this.loggedIn.next(true);
+        this.setUserRole(data.userDetialsDto.role.roleName);
         const loginTime = new Date().getTime();
         this.authenticateUser(data.userDetialsDto.username, data.token);
         sessionStorage.setItem('loginTime', loginTime.toString());

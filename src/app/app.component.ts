@@ -12,7 +12,7 @@ import { SideNavComponent } from "./components/internal/side-nav/side-nav.compon
     standalone: true,
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    imports: [CommonModule, RouterOutlet, FooterComponent, MenuComponent, HeaderComponent, SideNavComponent]
+    imports: [CommonModule, RouterOutlet, HeaderComponent]
 })
 export class AppComponent implements OnInit{
   

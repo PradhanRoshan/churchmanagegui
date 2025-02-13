@@ -121,13 +121,24 @@
           </a>
         </li>
         <li *ngIf="isUserRoleAdmin">
-          <a (click)="onApplicationClicked()" class="nav-link link-body-emphasis" id="v-pills-messages-tab"
+
+          <!-- <button type="button" class="btn btn-primary position-relative">
+            Profile
+            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+          </button> -->
+          
+          <a (click)="onApplicationClicked()" class="nav-link link-body-emphasis d-flex justify-content-between align-items-center" id="v-pills-messages-tab"
             data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab"
             aria-controls="v-pills-messages" aria-selected="false">
-            <svg class="bi pe-none me-2" width="16" height="16">
-              <use xlink:href="#table" />
-            </svg>
-            Applications
+            <div>
+              <svg class="bi pe-none me-2" width="16" height="16">
+          <use xlink:href="#table" />
+              </svg>
+              Applications
+            </div>
+            <span *ngIf="newApplicationsCount > 0" class="badge bg-danger rounded-pill">{{ newApplicationsCount }}</span>
           </a>
         </li>
         <li>
@@ -150,6 +161,19 @@
             Members
           </a>
         </li>
+
+
+        <!-- temp logout -->
+        <li>
+          <a (click)="logOut()" class="nav-link link-body-emphasis" id="v-pills-settings-tab"
+            data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab"
+            aria-controls="v-pills-settings" aria-selected="false">
+            <svg class="bi pe-none me-2" width="16" height="16">
+              <use xlink:href="#grid" />
+            </svg>
+            Temp Logout
+          </a>
+        </li>
       </div>
 
       <div class="tab-content" id="v-pills-tabContent">
@@ -163,7 +187,7 @@
       <hr />
       <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-          data-bs-toggle="dropdown" aria-expanded="false">
+           data-bs-toggle="dropdown" aria-expanded="false">
           <img src="assets/images/profile-img.jpg" alt="" width="32" height="32" class="rounded-circle me-2" />
           <strong>{{ loggedInUserName }}</strong>
         </a>
@@ -172,7 +196,7 @@
           <b>Logged in for:</b> {{ loginDuration }}
         </p>
         <!-- <p>Current Time: {{ currentTime }}</p> -->
-
+      
         <ul class="dropdown-menu text-small shadow">
           <!-- <li><a class="dropdown-item" href="#">New project...</a></li> -->
           <li>
