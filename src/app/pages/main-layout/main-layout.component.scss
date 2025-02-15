@@ -1,0 +1,12 @@
+// .content {
+//     margin-left: 220px; /* Same as sidebar width */
+//     flex-grow: 1;
+//     min-height: 100vh;
+//     background-color: #f8f9fa;
+//   }
+.content {
+  margin-left: 220px; /* Adjust for sidebar width */
+  margin-top: 56px; /* Prevents overlap with header */
+  flex-grow: 1;
+  overflow-y: auto;
+}

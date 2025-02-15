@@ -1,0 +1,60 @@
+<body>
+    <main>
+      <header class="p-3 text-bg-dark">
+        <div class="container">
+          <div
+            class="d-flex align-items-center justify-content-between"
+          >
+            <!-- Logo with Bootstrap Icon -->
+            <a
+              href="/"
+              class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+            >
+              <i class="bi bi-bootstrap-fill fs-3 me-2"></i>
+              <span class="fs-4 fw-bold">My Website</span>
+            </a>
+  
+            <!-- Centered Navigation Links -->
+            <ul class="nav mx-auto">
+              <li>
+                <a href="#" class="nav-link px-3 text-white">  Home  </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link px-3 text-white">  Features  </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link px-3 text-white">  Pricing  </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link px-3 text-white">  FAQs   </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link px-3 text-white">   About  </a>
+              </li>
+            </ul>
+  
+            <!-- Login & Signup Buttons -->
+            <div>
+              <button
+                type="button"
+                (click)="onLoginClicked()"
+                class="btn btn-outline-light me-2"
+              >
+                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+              </button>
+              <button
+                type="button"
+                (click)="onSignUpClicked()"
+                class="btn btn-warning"
+              >
+                <i class="bi bi-person-plus me-1"></i> Sign-up
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+    </main>
+  
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+  

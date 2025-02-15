@@ -1,0 +1,10 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 220px; /* Sidebar width */
+    width: calc(100% - 220px); /* Make header fit the remaining space */
+    height: 56px;
+    background-color: #212529;
+    z-index: 1030; /* Ensures header stays on top */
+    padding: 0 1rem;
+  }

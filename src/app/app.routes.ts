@@ -1,97 +1,44 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/auth/login/login.component';
-import { AuthGuard } from './components/auth/auth.guard';
-import { MemberListComponent } from './components/member/member-list/member-list.component';
-import { DashboardComponent } from './components/internal/dashboard/dashboard.component';
-import { InternalComponent } from './components/internal/internal.component';
-import { InternalHomeComponent } from './components/internal/internal-home/internal-home.component';
-import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { provideRouter } from '@angular/router';
+
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { LoginComponent } from './features/auth/login/login.component';
+import { SignupComponent } from './features/auth/signup/signup.component';
+import { MainLayoutComponent } from './pages/main-layout/main-layout.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { MembersComponent } from './features/dashboard/members/members.component';
+import { EventsComponent } from './features/dashboard/events/events.component';
+import { DonationsComponent } from './features/dashboard/donations/donations.component';
+import { ReportsComponent } from './features/dashboard/reports/reports.component';
+import { SettingsComponent } from './features/dashboard/settings/settings.component';
+import { AuthGuard } from './core/guards/auth.guard';  // ✅ FIXED IMPORT
+import { ApplicationsComponent } from './features/dashboard/applications/applications.component';
 
 export const routes: Routes = [
-
-  {
-    path: 'home',
-    loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
-  },
-  // {
-  //   path: 'dashboard',
-  //   loadComponent: () => import('./components/internal/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate:[AuthGuard]
-  // },
-
-  {
-    path: 'internal',
-    component: InternalComponent, canActivate: [AuthGuard],
-    children: [
-      { path: '', component: InternalHomeComponent },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'members', component: MemberListComponent },
-      {
-        path: 'profile',
-        loadComponent: () => import('./components/auth/profile/profile.component').then(m => m.ProfileComponent),
+    { path: '', component: LandingPageComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'signup', component: SignupComponent },
+    {
+        path: 'page-not-found',
+        loadComponent: () => import('./core/components/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent)
       },
-      {
-        path: 'settings',
-        loadComponent: () => import('./components/auth/settings/settings.component').then(m => m.SettingsComponent),
-      },
-      {
-        path: 'address',
-        loadComponent: () => import('./components/address/address-list/address-list.component').then(m => m.AddressListComponent)
-      }
-    ]
-  },
-
-
-
-
-
-
-  // {
-  //   path: 'internal',
-  //   loadComponent: () => import('./components/internal/internal.component').then(m => m.InternalComponent), canActivate:[AuthGuard]
-  // },
-  { path: 'reset-password', component: ResetPasswordComponent },
-  {
-    path: 'signup',
-    loadComponent: () => import('./components/auth/signup/signup.component').then(m => m.SignupComponent)
-  },
-  {
-    path: 'login',
-    loadComponent: () => import('./components/auth/login/login.component').then(m => m.LoginComponent),
-  },
-  // { path: 'members', component: MemberListComponent },
-  {
-    path: 'address',
-    loadComponent: () => import('./components/address/address-list/address-list.component').then(m => m.AddressListComponent)
-  },
-  {
-    path: 'page-not-found',
-    loadComponent: () => import('./shared/page-not-found/page-not-found.component').then(m => m.PageNotFoundComponent)
-  },
-  // {
-  //   path: 'auth',
-  //   loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule)
-  // },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'page-not-found' }
-  // { path: 'login', component: LoginComponent },
-  // { path: 'logout', component: LoginComponent },
-  // { path: 'addresses', component: AddressListComponent },
-  // { path: 'address/:id', component: AddressDetailComponent },
-  // { path: 'address-form', component: AddressFormComponent },
-  // { path: 'churches', component: ChurchListComponent },
-  // { path: 'church/:id', component: ChurchDetailComponent },
-  // { path: 'church-form', component: ChurchFormComponent },
-  // { path: 'members', component: MemberListComponent },
-  // { path: 'member/:id', component: MemberDetailComponent },
-  // { path: 'member-form', component: MemberFormComponent },
-  // { path: 'events', component: EventListComponent },
-  // { path: 'event/:id', component: EventDetailComponent },
-  // { path: 'event-form', component: EventFormComponent },
-  // { path: 'tithes-offerings', component: TitheAndOfferingListComponent },
-  // { path: 'tithe-offering/:id', component: TitheAndOfferingDetailComponent },
-  // { path: 'tithe-offering-form', component: TitheAndOfferingFormComponent },
-  // { path: 'login', component: LoginComponent },
-  // { path: 'signup', component: SignupComponent },
-  // { path: 'reset-password', component: ResetPasswordComponent },
-  // { path: '', redirectTo: '/addresses', pathMatch: 'full' }, // Default route
+    {
+        path: 'dashboard',
+        component: MainLayoutComponent,
+        canActivate: [AuthGuard],  // ✅ Ensure AuthGuard is correctly imported
+        children: [
+            { path: '', component: DashboardComponent },
+            { path: 'applications', component: ApplicationsComponent },
+            { path: 'members', component: MembersComponent },
+            { path: 'events', component: EventsComponent },
+            { path: 'donations', component: DonationsComponent },
+            { path: 'reports', component: ReportsComponent },
+            { path: 'settings', component: SettingsComponent },
+        ],
+    },
+    { path: '', redirectTo: '', pathMatch: 'full' },
+    { path: '**', redirectTo: 'page-not-found' }
+    // { path: '**', redirectTo: '' },
 ];
+
+export const routingProviders = [provideRouter(routes)];

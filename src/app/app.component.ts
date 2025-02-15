@@ -1,37 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { FooterComponent } from "./shared/footer/footer.component";
-import { MenuComponent } from "./shared/menu/menu.component";
-import { HeaderComponent } from "./shared/header/header.component";
-import { AuthService } from './services/auth.service';
-import { SideNavComponent } from "./components/internal/side-nav/side-nav.component";
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-    selector: 'app-root',
-    standalone: true,
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    imports: [CommonModule, RouterOutlet, HeaderComponent]
+  standalone: true,
+  selector: 'app-root',
+  template: `<router-outlet></router-outlet>`,
+  imports: [RouterOutlet]
 })
-export class AppComponent implements OnInit{
-  
-  title = 'Church Management Software';
-
-  showNavBar:boolean=false;
-
-  constructor(private authService :AuthService,private router: Router){
-
-  }
-  
-
-  ngOnInit(): void {
-    this.authService.isLoggedIn.subscribe(
-      (loggedIn:boolean) =>{
-        this.showNavBar = !loggedIn;
-      }
-    );
-
-    
-  }
-}
+export class AppComponent {}

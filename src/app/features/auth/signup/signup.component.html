@@ -1,0 +1,187 @@
+<body style="background-color: rgba(176, 224, 230, 0.582); height: 92.9vh;">
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+      <!-- <h1 class="display-4 text-center">Reset Password</h1>
+    <hr class="border border-primary border-2 opacity-75"> -->
+      <div class="row align-items-center g-lg-3 py-5">
+        <!-- 
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Vertically centered hero sign-up form</h1>
+        <p class="col-lg-10 fs-4">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+      </div> -->
+  
+        <div class="col-md-10 mx-auto col-lg-8">
+          <form [formGroup]="signUpForm" class="p-4 p-md-4 border rounded-3 bg-body-tertiary">
+            <!-- <h1 class="display-4 text-center">Please sign Up</h1> -->
+            <h1 class="card-title text-center pb-0 fs-1">Create an Account</h1>
+            <p class="text-center large">Enter your personal details to create account</p>
+            <hr class="border border-primary border-2 opacity-75" />
+  
+            <div *ngIf="!isFormValid" class="alert alert-danger" role="alert">
+              Form input is invalid. Please check the field.
+            </div>
+            <div *ngIf="!isUsernameValid" class="alert alert-danger" role="alert">
+              User not found. Please enter correct username.
+            </div>
+  
+            <div class="row">
+              <div class="col">
+                <div class="form-floating mb-3">
+                  <input formControlName="firstName" type="text" class="form-control" id="floatingInput"
+                    placeholder="firstName"/>
+                  <label for="floatingInput">First Name</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating mb-3">
+                  <input formControlName="lastName" type="text" class="form-control" id="floatingInput"
+                    placeholder="lastName" />
+                  <label for="floatingUsername">Last Name</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-floating mb-3">
+                  <input formControlName="username" type="text" class="form-control" id="floatingPassword"
+                    placeholder="Username" />
+                  <label for="floatingUsername">Username</label>
+                  <div *ngIf="!isUsernameValid" style="color: red;">
+                    Username is already taken
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col">
+                <div class="form-floating mb-3">
+                  <input formControlName="email" type="email" class="form-control" id="floatingInput"
+                    placeholder="name@example.com" />
+                  <label for="floatingInput">Email address</label>
+                </div>
+              </div>
+            </div>
+  
+            <div class="row pb-2">
+              <small class="col text-body-secondary">Enter a password below.</small>
+            </div>
+  
+            <div class="row">
+              <div class="col">
+                <div class="form-floating mb-3">
+                  <input formControlName="password" type="password" class="form-control" id="floatingPassword"
+                    placeholder="Password" />
+                  <label for="floatingInput">Password</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating mb-3">
+                  <input formControlName="confirmPassword" type="password" class="form-control" id="floatingPassword"
+                    placeholder="Password" />
+                  <label for="floatingPassword">Confirm Password</label>
+                  <div *ngIf="!isPasswordValid" style="color: red">
+                    Password did not match
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="checkbox mb-3">
+              <label>
+                <input required type="checkbox" value="remember-me"> I agree and accept the <a href="#">terms and conditions</a>
+              </label>
+              <div class="invalid-feedback">You must agree before submitting.</div>
+            </div>
+            <!-- <button (click)="signUp()" class="w-100 btn btn-lg btn-primary" type="submit">
+              Create Account
+            </button> -->
+  
+            <div class="col-12">
+              <button (click)="signUp()" class="w-100 btn btn-lg btn-primary" type="submit">
+                Create Account
+              </button>
+            </div>
+  
+            <div class="col-12 pt-3">
+              <p class="large mb-0">Already have an account? <a (click)="signIn()" class="link-primary">Log in</a></p>
+            </div>
+            <hr class="my-4" />
+            <small class="text-body-secondary">By clicking Create Account, you agree to the terms of use.</small>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <!-- <form class="row g-3 mt-3">
+     
+        <div class="col form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+       
+        </div>
+        <div class="col form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="col form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+    </form> -->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- 
+  
+  <div class="container">
+  <form [formGroup] = "signUpForm"  class="row g-3 needs-validation">
+    <h1 class="h3 mb-3 fw-normal">Please sign Up</h1>
+    <div *ngIf="!isFormValid" style="color: red;">
+      Form input is invalid. Please check the field.
+    </div>
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">First Name</label>
+      <input required type="text" formControlName="firstName" class="form-control" id="inputEmail4">
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Last Name</label>
+      <input type="text" formControlName="lastName" class="form-control" id="inputPassword4">
+    </div>
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Username</label>
+      <input type="text" formControlName="username" class="form-control" id="inputEmail4">
+      <div *ngIf="!isUsernameValid" style="color: red;">
+        Username is already taken
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Email</label>
+      <input email type="email" formControlName="email" class="form-control" id="inputEmail4">
+    </div>
+    <div class="col-md-12">
+      <label for="inputPassword4" class="form-label">Password</label>
+      <input type="password" formControlName="password" class="form-control" id="inputPassword4">
+    </div>
+    <div class="col-md-12">
+      <label for="inputPassword4" class="form-label">Confirm Password</label>
+      <input type="password" formControlName="confirmPassword" class="form-control" id="inputPassword4">
+      <div *ngIf="!isPasswordValid" style="color: red;">
+        Password did not match
+      </div>
+  
+    </div>
+      <div class="col-3">
+        <button class="btn btn-primary w-100 py-2" (click)="signUp()" type="submit">Submit</button>
+      </div>
+      <div class="col-3">
+        <button class="btn btn-secondary w-100 py-2" (click)="signIn()" type="submit">Sign In</button>
+      </div>
+  
+  </form>
+  
+  </div>  -->
