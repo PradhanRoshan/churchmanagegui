@@ -16,6 +16,8 @@ export class AuthService {
     responseType: 'text' as 'json'
   }
 
+  memberId:string;
+
   // Store loggined User Role in BehaviorSubject
   // This BehaviorSubject can be used to track the user's role throughout the application
   private userRole = new BehaviorSubject<string | null>(null);
@@ -60,6 +62,7 @@ export class AuthService {
     return this.http.post<AuthenticationBean>(this.API_URL + "/auth/login", payload).pipe(
       map(data => {
         this.loggedIn.next(true);
+        this.memberId=data.userDetialsDto.member.memberId;
         this.setUserRole(data.userDetialsDto.role.roleName);
         const loginTime = new Date().getTime();
         this.authenticateUser(data.userDetialsDto.username, data.token);

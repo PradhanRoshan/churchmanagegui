@@ -13,6 +13,7 @@ import { ReportsComponent } from './features/dashboard/reports/reports.component
 import { SettingsComponent } from './features/dashboard/settings/settings.component';
 import { AuthGuard } from './core/guards/auth.guard';  // ✅ FIXED IMPORT
 import { ApplicationsComponent } from './features/dashboard/applications/applications.component';
+import { ProfileSetupComponent } from './features/dashboard/profile-setup/profile-setup.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -34,6 +35,7 @@ export const routes: Routes = [
             { path: 'donations', component: DonationsComponent },
             { path: 'reports', component: ReportsComponent },
             { path: 'settings', component: SettingsComponent },
+            { path: 'profile-setup/:id', component: ProfileSetupComponent }
         ],
     },
     { path: '', redirectTo: '', pathMatch: 'full' },

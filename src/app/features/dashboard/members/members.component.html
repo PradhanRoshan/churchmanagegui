@@ -1,0 +1,86 @@
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>All Members</h2>
+      <div class="d-flex gap-3">
+        <button *ngIf="isFilterApplied()" type="button" class="btn btn-outline-primary"  (click)="clearFilters()">Clear</button>
+
+        <select [(ngModel)]="selectedStatus" class="form-select form-select-sm" (change)="paginatedData()">
+          <option value="">Status: All</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+          <option value="In Progress">In Progress</option>
+        </select>
+  
+        <select [(ngModel)]="selectedRole" class="form-select form-select-sm" (change)="paginatedData()">
+          <option value="">Roles: All</option>
+          <option value="Admin">Admin</option>
+          <option value="Member">Member</option>
+          <option value="Volunteer">Volunteer</option>
+        </select>
+  
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          class="form-control form-control-sm"
+          placeholder="Search users..."
+        />
+      </div>
+    </div>
+  
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <!-- <th><input role="checkbox" /></th> -->
+        <th (click)="sortTable('memberId')">Member ID <span>{{ getSortIcon('memberId') }}</span></th>
+        <th (click)="sortTable('fullName')">Full Name <span>{{ getSortIcon('fullName') }}</span></th>
+        <th (click)="sortTable('applicationStatus')">Application Status <span>{{ getSortIcon('applicationStatus') }}</span></th>
+        <th (click)="sortTable('role')">Role <span>{{ getSortIcon('role') }}</span></th>
+        <th (click)="sortTable('email')">Email <span>{{ getSortIcon('email') }}</span></th>
+        <th (click)="sortTable('memberSince')">Member Since <span>{{ getSortIcon('memberSince') }}</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of paginatedData()">
+          <!-- <td><input role="checkbox" /></td> -->
+          <!-- <td>{{ user.userMember.memberId }}</td> -->
+          <td><a (click)="onHyperLinkClicked(user)" class="member-link">{{ user.userMember.memberId }}</a></td>
+          <td class="d-flex align-items-center">
+            <!-- <img [src]="user.image" alt="Avatar" class="avatar me-2" /> -->
+            {{  getColumnValue(user, 'fullName') }}
+          </td>
+          <td><span class="status-dot" [ngClass]="getStatusClass(user.applicationStatus.statusName)"></span> {{ user.applicationStatus.statusName }}</td>
+          <td>{{ user.role.roleName }}</td>
+          <td>{{ user.userMember.emailId }}</td>
+          <td>{{ user.userMember.dttmCreate}}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <!-- Pagination Controls -->
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+      Showing: 
+      <select [(ngModel)]="pageSize" (change)="changePage(1)" class="form-select form-select-sm d-inline w-auto">
+        <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+      </select>
+      of {{ filteredData().length }}
+    </div>
+  
+    <nav>
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="changePage(currentPage - 1)">Prev</button>
+        </li>
+  
+        <li *ngFor="let page of totalPagesArray()" class="page-item" [class.active]="page === currentPage">
+          <button class="page-link" (click)="changePage(page)">{{ page }}</button>
+        </li>
+  
+        <li class="page-item" [class.disabled]="currentPage === totalPages()">
+          <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
+  

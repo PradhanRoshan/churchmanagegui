@@ -4,6 +4,7 @@ import { getFormControlValue, nullifyEmptyFormFields } from '../../../util/react
 import { Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
+import { EntitlementService } from '../../../core/services/entitlement.service';
 
 @Component({
   selector: 'app-login',
@@ -21,15 +22,20 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   invalidCredentials: boolean = true;
   isFormValid: boolean = true;
+  memberId: string;
+  isApplStsValid: boolean = false;
+
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private entitlementService: EntitlementService
   ) {
   }
 
   ngOnInit(): void {
+
     this.createLoginForm();
   }
   createLoginForm() {
@@ -54,20 +60,27 @@ export class LoginComponent implements OnInit {
         .subscribe(
           {
             next: (response) => {
+              this.memberId = response.userDetialsDto.member.memberId;
+              console.log("===================myResponse:===================", response);
+              this.authService.authenticateUser(username, response.token);               
+              
+              this.isApplStsValid = this.entitlementService.isApplicationStsValid();
 
-              console.log("myResponse:", response);
+              if (!this.isApplStsValid) {
 
-              this.authService.authenticateUser(username, response.token);  // Store user and token
-              // console.log(this.authService.getAuthenticatedUserRole());
+                console.log("I am inside of the routing ")
+                this.router.navigate(['/dashboard/profile-setup', this.memberId]); // Replace memberId with the actual ID
+              } else{
 
-              console.log("response.userDetialsDto.address:", response.userDetialsDto.address);
+                this.router.navigate(['/dashboard']);  // Navigate to a protected route
+              }
 
               // if (response.userDetialsDto.address == null) {
 
               //   console.log("Address is null:");
 
               // } else {
-              this.router.navigate(['/dashboard']);  // Navigate to a protected route
+              // this.router.navigate(['/dashboard']);  // Navigate to a protected route
               // }
 
             },

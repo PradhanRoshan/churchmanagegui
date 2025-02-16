@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+
+
+
+// Default Table Id Hyperlink color
+.member-link {
+    color: #219ebc; /* Default Bootstrap blue */
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  
+  .member-link:hover {
+    color: #023047; /* Change to orange on hover */
+    text-decoration: underline;
+  }

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { API_URL } from '../../../environments/environment';
-import { RegistrationTracking } from '../model/registration-tracking.model';
+import { ApplHistory, RegistrationTracking } from '../model/registration-tracking.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,4 +52,9 @@ export class MembersService {
   reviewApplicationDecision(payload: { memberId: any; role: any; applicationStatus: { statusId: number; statusName: string; }; }) {
     return this.http.post(this.baseUrl + "/member/review-application", payload, this.textResponse);
   }
+
+  getAppProcHistory(memberId: string): Observable<ApplHistory[]> {
+    return this.http.get<ApplHistory[]>(`${this.baseUrl}/member/application-progress/${memberId}`);
+  }
+  
 }

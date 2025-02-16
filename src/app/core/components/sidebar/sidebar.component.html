@@ -1,10 +1,10 @@
 <nav class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-light">
     <a routerLink="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
-      <span class="fs-5 fw-bold text-primary"><i class="bi bi-speedometer me-2"></i> Dashboard</span>
+      <span class="fs-5 fw-bold user-color"><i class="bi bi-speedometer me-2"></i> Dashboard</span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
+      <li *ngIf="hideIfAddIsInvalid || isUserRoleAdmin" class="nav-item">
         <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
           <i class="bi bi-house-door me-2"></i> Home
         </a>
@@ -15,22 +15,27 @@
           <span *ngIf="newApplicationsCount > 0" class="badge bg-danger rounded-pill">{{ newApplicationsCount }} </span>
         </a>
       </li>
-      <li>
+      <li *ngIf="(isApplStsValid && isUserRoleAdmin) || isUserRoleAdmin">
         <a routerLink="/dashboard/members" routerLinkActive="active" class="nav-link">
           <i class="bi bi-people me-2"></i> Members
         </a>
       </li>
-      <li>
+      <li *ngIf="isApplStsValid || isUserRoleAdmin">
         <a routerLink="/dashboard/events" routerLinkActive="active" class="nav-link">
           <i class="bi bi-calendar-event me-2"></i> Events
         </a>
       </li>
-      <li>
+      <li *ngIf="isApplStsValid || isUserRoleAdmin">
         <a routerLink="/dashboard/donations" routerLinkActive="active" class="nav-link">
           <i class="bi bi-credit-card me-2"></i> Donations
         </a>
       </li>
-      <li>
+      <li *ngIf="!hideIfAddIsInvalid">
+        <a [routerLink]="['/dashboard/profile-setup', memberId]" routerLinkActive="active" class="nav-link">
+          <i class="bi bi-gear me-2"></i> Profile Setup
+        </a>
+      </li>
+      <li *ngIf="hideIfAddIsInvalid || isUserRoleAdmin">
         <a routerLink="/dashboard/settings" routerLinkActive="active" class="nav-link">
           <i class="bi bi-gear me-2"></i> Settings
         </a>
@@ -38,9 +43,9 @@
     </ul>
     <hr>
     <div class="dropdown">
-      <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+      <a href="#" class="d-flex align-items-center user-color text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
         <img src="../../../../assets/images/profile-img.jpg" alt="profile" width="32" height="32" class="rounded-circle me-2">
-        <strong>{{loggedInUser.toUpperCase() | truncate:8}}</strong>
+        <strong class="user-color">{{loggedInUser.toUpperCase() | truncate:8}}</strong>
       </a>
       <ul class="dropdown-menu text-small shadow">
         <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profile</a></li>

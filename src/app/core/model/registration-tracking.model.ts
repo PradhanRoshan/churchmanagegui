@@ -39,3 +39,14 @@ export interface UserMember {
   middleName: string;
   phone: string;
 }
+
+export interface ApplHistory {
+  id: number;
+  applicationStatus: string;
+  applicationType: string;
+  comment: string;
+  idUserCreate: string;
+  idUserLstUpdt: string;
+  dttmCreate: string;
+  dttmLstUpdt: string;
+}    

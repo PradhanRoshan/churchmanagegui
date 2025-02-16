@@ -8,17 +8,21 @@
     border-right: 1px solid #ddd;
   }
   .nav-link {
-    color: #333;
+    color: #023047;
     font-weight: 500;
     transition: background 0.3s;
   }
   .nav-link.active {
-    background: #007bff !important;
-    color: white !important;
+    background: #023047 !important;
+    color: #ffb703 !important;
     border-radius: 5px;
   }
   .nav-link:hover {
-    background: #007bff;
-    color: white;
+    background: #ebf3f4;
+    // color: white;
     border-radius: 5px;
+  }
+
+  .user-color{
+    color: #023047;
   }
