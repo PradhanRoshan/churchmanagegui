@@ -7,8 +7,9 @@
         <select [(ngModel)]="selectedStatus" class="form-select form-select-sm" (change)="paginatedData()">
           <option value="">Status: All</option>
           <option value="Approved">Approved</option>
-          <option value="Rejected">Rejected</option>
           <option value="In Progress">In Progress</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Submitted">Submitted</option>
         </select>
   
         <select [(ngModel)]="selectedRole" class="form-select form-select-sm" (change)="paginatedData()">
@@ -28,15 +29,15 @@
     </div>
   
     <table class="table table-hover">
-      <thead>
+      <thead >
         <tr>
           <!-- <th><input role="checkbox" /></th> -->
-        <th (click)="sortTable('memberId')">Member ID <span>{{ getSortIcon('memberId') }}</span></th>
-        <th (click)="sortTable('fullName')">Full Name <span>{{ getSortIcon('fullName') }}</span></th>
-        <th (click)="sortTable('applicationStatus')">Application Status <span>{{ getSortIcon('applicationStatus') }}</span></th>
-        <th (click)="sortTable('role')">Role <span>{{ getSortIcon('role') }}</span></th>
-        <th (click)="sortTable('email')">Email <span>{{ getSortIcon('email') }}</span></th>
-        <th (click)="sortTable('memberSince')">Member Since <span>{{ getSortIcon('memberSince') }}</span></th>
+        <th (click)="sortTable('memberId')"> <span class="sub-text">Member ID  {{ getSortIcon('memberId') }}</span></th>
+        <th (click)="sortTable('fullName')"><span class="sub-text"> Full Name {{ getSortIcon('fullName') }}</span></th>
+        <th (click)="sortTable('applicationStatus')"><span class="sub-text"> Application Status {{ getSortIcon('applicationStatus') }}</span></th>
+        <th (click)="sortTable('role')"><span class="sub-text">Role {{ getSortIcon('role') }}</span></th>
+        <th (click)="sortTable('email')"><span class="sub-text">Email {{ getSortIcon('email') }}</span></th>
+        <th (click)="sortTable('memberSince')"><span class="sub-text">Member Since{{ getSortIcon('memberSince') }}</span></th>
         </tr>
       </thead>
       <tbody>

@@ -1,8 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
 
-
-
+// Setting defult text for sub-text
+.sub-text {
+  color:#023047;
+}
 
 // Default Table Id Hyperlink color
 .member-link {
@@ -12,6 +14,6 @@
   }
   
   .member-link:hover {
-    color: #023047; /* Change to orange on hover */
+    color: #023047; /* Change to orange on hover 023047*/
     text-decoration: underline;
   }

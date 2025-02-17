@@ -1,13 +1,10 @@
 <body>
-
-    {{memberId}}
-
     <div class="container mt-4">
         <div class="card">
             <div class="card-body text-center">
                 <img src="../../../../assets/images/profile-img.jpg" class="rounded-circle mb-3" alt="Profile Picture">
                 <h4>{{fullName}} <span class="badge bg-primary"><i class="bi bi-patch-check-fill"></i></span></h4>
-                <p>Pixel Ltd. | London, UK | Joined March 2013</p>
+                <p>Pixel Ltd. | London, UK | Joined {{formateDate(currentUserDetails.userMember.dttmCreate)}}</p>
                 <button class="btn btn-outline-primary btn-sm">Edit Profile</button>
             </div>
         </div>
@@ -16,12 +13,12 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">Profile</div>
-                    <div class="card-body">
+                    <div class="card-body sub-text">
                         <p><strong>Name:</strong> {{fullName}}</p>
-                        <p><strong>Role:</strong> No department</p>
+                        <p><strong>Role:</strong> {{currentUserDetails.role.roleName}}</p>
                         <p><strong>Church:</strong> Pixel Ltd.</p>
-                        <p><strong>Email:</strong> marksite.com</p>
-                        <p><strong>Phone:</strong> +1 (555) 752-01-10</p>
+                        <p><strong>Email:</strong> {{currentUserDetails.userMember.emailId}}</p>
+                        <p><strong>Phone:</strong> {{currentUserDetails.userMember.phone || "--"}}</p>
                         <p><strong>Teams:</strong> You are not a member of any teams</p>
                         <p><strong>Projects:</strong> You are not working on any projects</p>
                     </div>

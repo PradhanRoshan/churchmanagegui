@@ -41,7 +41,7 @@ this.getCurrentUserDetailsData();
     this.getApplicationProgressDetial();
   }
 
-  
+
   getCurrentUserDetailsData() {
      // Subscribe to authService to keep user details updated
   this.authService.currentUser$.subscribe({
@@ -63,6 +63,11 @@ this.getCurrentUserDetailsData();
     }
   });
   }
+
+  formateDate(dateString: string) {
+    const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(date);
+    }
 
 
   getApplicationProgressDetial() {

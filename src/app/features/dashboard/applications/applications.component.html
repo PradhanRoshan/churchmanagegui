@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="new-application-tab" data-bs-toggle="tab"
+        <button class="nav-link active tab-color" id="new-application-tab" data-bs-toggle="tab"
           data-bs-target="#new-application" type="button" role="tab"
           aria-controls="new-application" aria-selected="true"
           (click)="fetchData('new')">
@@ -9,7 +9,7 @@
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="inprogress-tab" data-bs-toggle="tab"
+        <button class="nav-link tab-color" id="inprogress-tab" data-bs-toggle="tab"
           data-bs-target="#inprogress" type="button" role="tab"
           aria-controls="inprogress" aria-selected="false"
           (click)="fetchData('inprogress')">
@@ -17,7 +17,7 @@
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="approved-tab" data-bs-toggle="tab"
+        <button class="nav-link tab-color" id="approved-tab" data-bs-toggle="tab"
           data-bs-target="#approved" type="button" role="tab"
           aria-controls="approved" aria-selected="false"
           (click)="fetchData('approved')">
@@ -25,7 +25,7 @@
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="rejected-tab" data-bs-toggle="tab"
+        <button class="nav-link tab-color" id="rejected-tab" data-bs-toggle="tab"
           data-bs-target="#rejected" type="button" role="tab"
           aria-controls="rejected" aria-selected="false"
           (click)="fetchData('rejected')">
@@ -39,13 +39,13 @@
 <div class="tab-pane fade show active" id="new-application" role="tabpanel" aria-labelledby="new-application-tab">
   <table class="table table-hover mt-3">
     <thead>
-      <tr>
-        <th scope="col">Member Id</th>
-        <th scope="col">Full Name</th>
-        <th scope="col">Role</th>
-        <th scope="col">Application Status</th>
-        <th scope="col">Date Submitted</th>
-        <th scope="col">Action</th>
+      <tr >
+        <th scope="col"><span class="sub-text">Member Id</span> </th>
+        <th scope="col"><span class="sub-text">Full Name</span></th>
+        <th scope="col"><span class="sub-text">Role</span></th>
+        <th scope="col"><span class="sub-text">Application Status</span></th>
+        <th scope="col"><span class="sub-text">Date Submitted</span></th>
+        <th scope="col"><span class="sub-text">Action</span></th>
       </tr>
     </thead>
     <tbody>
@@ -71,12 +71,12 @@
         <table class="table table-hover mt-3">
           <thead>
             <tr>
-              <th scope="col">Member Id</th>
-              <th scope="col">Full Name</th>
-              <th scope="col">Role</th>
-              <th scope="col">Application Status</th>
-              <th scope="col">Date Submitted</th>
-              <th scope="col">Action</th>
+              <th scope="col"><span class="sub-text">Member Id</span> </th>
+              <th scope="col"><span class="sub-text">Full Name</span></th>
+              <th scope="col"><span class="sub-text">Role</span></th>
+              <th scope="col"><span class="sub-text">Application Status</span></th>
+              <th scope="col"><span class="sub-text">Date Submitted</span></th>
+              <th scope="col"><span class="sub-text">Action</span></th>
             </tr>
           </thead>
           <tbody>
@@ -104,12 +104,12 @@
         <table class="table table-hover mt-3">
           <thead>
             <tr>
-              <th scope="col">Member Id</th>
-              <th scope="col">Full Name</th>
-              <th scope="col">Role</th>
-              <th scope="col">Application Status</th>
-              <th scope="col">Date Submitted</th>
-              <th scope="col">Action</th>
+              <th scope="col"><span class="sub-text">Member Id</span> </th>
+              <th scope="col"><span class="sub-text">Full Name</span></th>
+              <th scope="col"><span class="sub-text">Role</span></th>
+              <th scope="col"><span class="sub-text">Application Status</span></th>
+              <th scope="col"><span class="sub-text">Date Submitted</span></th>
+              <th scope="col"><span class="sub-text">Action</span></th>
             </tr>
           </thead>
           <tbody>
@@ -137,12 +137,12 @@
         <table class="table table-hover mt-3">
           <thead>
             <tr>
-              <th scope="col">Member Id</th>
-              <th scope="col">Full Name</th>
-              <th scope="col">Role</th>
-              <th scope="col">Application Status</th>
-              <th scope="col">Date Submitted</th>
-              <th scope="col">Action</th>
+              <th scope="col"><span class="sub-text">Member Id</span> </th>
+              <th scope="col"><span class="sub-text">Full Name</span></th>
+              <th scope="col"><span class="sub-text">Role</span></th>
+              <th scope="col"><span class="sub-text">Application Status</span></th>
+              <th scope="col"><span class="sub-text">Date Submitted</span></th>
+              <th scope="col"><span class="sub-text">Action</span></th>
             </tr>
           </thead>
           <tbody>
@@ -182,7 +182,7 @@
             <div class="col-md">
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext" id="memberId" [value]="selectedObj?.userMember.memberId" readonly>
+                <input type="text" class="form-control-plaintext sub-text" id="memberId" [value]="selectedObj?.userMember.memberId" readonly>
                 <label for="memberId">Member ID</label>
               </div>
 
@@ -192,7 +192,7 @@
               <div class="form-floating">
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext" id="status" [value]="selectedObj?.applicationStatus.statusName" [ngClass]="{
+                <input type="text" class="form-control-plaintext sub-text" id="status" [value]="selectedObj?.applicationStatus.statusName" [ngClass]="{
                 'text-primary fw-bold': selectedObj?.applicationStatus.statusName === 'Submitted',
                 'text-warning fw-bold': selectedObj?.applicationStatus.statusName === 'In Progress',
                 'text-success fw-bold': selectedObj?.applicationStatus.statusName === 'Approved',
@@ -209,7 +209,7 @@
             <div class="col-md">
 
               <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext" id="firstName" [value]="selectedObj?.userMember.firstName" readonly>
+                <input type="text" class="form-control-plaintext sub-text" id="firstName" [value]="selectedObj?.userMember.firstName" readonly>
                 <label for="firstName">First Name</label>
               </div>
 
@@ -219,7 +219,7 @@
               <div class="form-floating">
 
                 <div class="form-floating mb-3">
-                  <input type="text" class="form-control-plaintext" id="lastName" [value]="selectedObj?.userMember.lastName" readonly>
+                  <input type="text" class="form-control-plaintext sub-text" id="lastName" [value]="selectedObj?.userMember.lastName" readonly>
                   <label for="lastName">Last Name</label>
                 </div>
 
@@ -230,13 +230,13 @@
           <div class="row g-2">
             <div class="col-md">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext" id="currentRole" [value]="defaultRoleName" readonly>
+                <input type="text" class="form-control-plaintext sub-text" id="currentRole" [value]="defaultRoleName" readonly>
                 <label for="currentRole">Current Role</label>
               </div>
             </div>
             <div class="col-md">
               <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext" id="currentEmail" [value]="selectedObj?.userMember.emailId" readonly>
+                <input type="text" class="form-control-plaintext sub-text" id="currentEmail" [value]="selectedObj?.userMember.emailId" readonly>
                 <label for="currentEmail">Email</label>
               </div>
             </div>
@@ -245,7 +245,7 @@
           <div class="row g-2">
             <div class="col-md">
               <div class="form-floating">
-                <select class="form-select" id="newRole" [(ngModel)]="selectedRoleId" name="newRole" (change)="updateRole($event)" required>
+                <select class="form-select sub-text" id="newRole" [(ngModel)]="selectedRoleId" name="newRole" (change)="updateRole($event)" required>
                   <option disabled selected value="">Open this select menu</option>
                   <option *ngFor="let role of roles" [value]="role.roleId">{{ role.roleName }}</option>
                 </select>
