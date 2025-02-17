@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   invalidCredentials: boolean = true;
   isFormValid: boolean = true;
-  memberId: string;
   isApplStsValid: boolean = false;
 
 
@@ -60,7 +59,6 @@ export class LoginComponent implements OnInit {
         .subscribe(
           {
             next: (response) => {
-              this.memberId = response.userDetialsDto.member.memberId;
               console.log("===================myResponse:===================", response);
               this.authService.authenticateUser(username, response.token);               
               
@@ -69,19 +67,11 @@ export class LoginComponent implements OnInit {
               if (!this.isApplStsValid) {
 
                 console.log("I am inside of the routing ")
-                this.router.navigate(['/dashboard/profile-setup', this.memberId]); // Replace memberId with the actual ID
+                this.router.navigate(['/dashboard/profile-setup']); // Replace memberId with the actual ID
               } else{
 
                 this.router.navigate(['/dashboard']);  // Navigate to a protected route
               }
-
-              // if (response.userDetialsDto.address == null) {
-
-              //   console.log("Address is null:");
-
-              // } else {
-              // this.router.navigate(['/dashboard']);  // Navigate to a protected route
-              // }
 
             },
             error: (e) => {

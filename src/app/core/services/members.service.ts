@@ -42,8 +42,9 @@ export class MembersService {
     return this.http.get<RegistrationTracking[]>(this.baseUrl + "/member/registration-tracking").pipe(
       map((data: RegistrationTracking[]) => {
         console.log('Data fetched from API:', data);
-        const newApplicationCount = data.filter(item => item.applicationStatus.statusName === 'Submitted').length;
+        const newApplicationCount = data.filter(item => item.applicationStatus.statusName === 'Submitted').length;  
         this.updateNewApplicationCount(newApplicationCount);
+        sessionStorage.setItem('newApplicationCount', newApplicationCount.toString());
         return data;
       })
     );

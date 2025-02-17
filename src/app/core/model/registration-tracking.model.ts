@@ -36,6 +36,7 @@ export interface UserMember {
   dttmCreate: null | string; // Date stored as string
   memberDob: string;
   status: string;
+  applicationSts?:string
   middleName: string;
   phone: string;
 }

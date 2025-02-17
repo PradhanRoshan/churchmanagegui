@@ -1,3 +1,87 @@
-<p>profile-setup works! </p>
+<body>
 
-{{memberId}}
+    {{memberId}}
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <img src="../../../../assets/images/profile-img.jpg" class="rounded-circle mb-3" alt="Profile Picture">
+                <h4>{{fullName}} <span class="badge bg-primary"><i class="bi bi-patch-check-fill"></i></span></h4>
+                <p>Pixel Ltd. | London, UK | Joined March 2013</p>
+                <button class="btn btn-outline-primary btn-sm">Edit Profile</button>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Profile</div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> {{fullName}}</p>
+                        <p><strong>Role:</strong> No department</p>
+                        <p><strong>Church:</strong> Pixel Ltd.</p>
+                        <p><strong>Email:</strong> marksite.com</p>
+                        <p><strong>Phone:</strong> +1 (555) 752-01-10</p>
+                        <p><strong>Teams:</strong> You are not a member of any teams</p>
+                        <p><strong>Projects:</strong> You are not working on any projects</p>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Activity Stream</div>
+                        <div class="card-body">
+                            <div *ngFor="let application of applHistory">
+                                <p><strong>{{ application.applicationType }}</strong></p>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" 
+                                        [ngClass]="{'bg-success': application.applicationStatus === 'Submitted', 'bg-warning': application.applicationStatus === 'In Progress'}" 
+                                        [style.width]="application.applicationStatus === 'Submitted' ? '50%' : '100%'">
+                                        {{ application.applicationStatus }}
+                                    </div>
+                                </div>
+                                <p>{{ application.comment }}</p>
+                                <p><small>Last updated by: {{ application.idUserLstUpdt }} on {{ application.dttmLstUpdt }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Activity Stream</div>
+                    <div class="card-body text-center">
+
+                        <div *ngFor="let application of applHistory">
+                            <p><strong>{{ application.applicationType }}</strong></p>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" 
+                                    [ngClass]="{'bg-success': application.applicationStatus === 'Submitted', 'bg-warning': application.applicationStatus === 'In Progress'}" 
+                                    [style.width]="application.applicationStatus === 'Submitted' ? '50%' : '100%'">
+                                    {{ application.applicationStatus }}
+                                </div>
+                            </div>
+                            <p>{{ application.comment }}</p>
+                            <p><small>Last updated by: {{ application.idUserLstUpdt }} on {{ application.dttmLstUpdt }}</small></p>
+                        </div>
+
+
+                        <!-- <p>No data to show</p>
+                        <button class="btn btn-outline-secondary">Start your Activity</button> -->
+                    </div>
+                </div>
+                <!-- <div class="card mt-3">
+                    <div class="card-header">Projects</div>
+                    <div class="card-body text-center">
+                        <p>No data to show</p>
+                        <button class="btn btn-outline-secondary">Start your Projects</button>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    
+   
+</body>

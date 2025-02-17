@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
+import { MembersService } from './members.service';
+import { UserDetails } from '../model/user-details.model';
 
 @Injectable({
   providedIn: 'root'
@@ -6,7 +9,9 @@ import { Injectable } from '@angular/core';
 export class EntitlementService {
 
 
-  constructor() { }
+  constructor(private authService:AuthService,
+    private membersService:MembersService
+  ) { }
 
   isApplicationStsValid():boolean {
     const invalidSts = ['In Progress', 'Rejected', 'Submitted'];
@@ -65,6 +70,35 @@ export class EntitlementService {
     }
     return false; // If no user details found, assume address is missing
   }
+
+  getNewAppCount(): number {
+    const storedValue = sessionStorage.getItem('newApplicationCount');
+  
+    // Validate and convert the value to a number
+    const newAppCount: number = storedValue !== null && !isNaN(Number(storedValue)) 
+      ? Number(storedValue) 
+      : 0; // Default to 0 if invalid
+  
+    // Update count
+    this.membersService.updateNewApplicationCount(newAppCount);
+  
+    return newAppCount;
+  }
+
+  getCurrentUserDetails(){
+    const userDetailsObj = sessionStorage.getItem('userDetials');
+    if (userDetailsObj) {
+      const userDetails = JSON.parse(userDetailsObj);
+      let userDetailData : UserDetails ={
+        userMember: userDetails.member,
+        role: userDetails.role,
+        address: userDetails.address
+      }
+      return userDetailData;
+    }
+    return null;
+  }
+  
 
 }
 

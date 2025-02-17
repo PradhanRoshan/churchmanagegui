@@ -35,7 +35,7 @@ export const routes: Routes = [
             { path: 'donations', component: DonationsComponent },
             { path: 'reports', component: ReportsComponent },
             { path: 'settings', component: SettingsComponent },
-            { path: 'profile-setup/:id', component: ProfileSetupComponent }
+            { path: 'profile-setup', component: ProfileSetupComponent }
         ],
     },
     { path: '', redirectTo: '', pathMatch: 'full' },

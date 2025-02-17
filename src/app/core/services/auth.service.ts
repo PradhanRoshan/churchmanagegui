@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, map, catchError } from 'rxjs';
 import { API_URL } from '../../../environments/environment';
+import { UserDetails } from '../model/user-details.model';
 
 
 @Injectable({
@@ -16,8 +17,22 @@ export class AuthService {
     responseType: 'text' as 'json'
   }
 
-  memberId:string;
+// Store loggined User Details in BehaviorSubject
+  private userDetails = new BehaviorSubject<UserDetails>(null);
 
+  // Get user role as an observable
+  currentUser$ = this.userDetails.asObservable();
+
+  getUserDetails(): Observable<UserDetails> {
+    return this.userDetails.asObservable();
+  }
+
+  setUserDetials(userDetails: UserDetails) {
+    this.userDetails.next(userDetails);
+  }
+
+
+  // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Store loggined User Role in BehaviorSubject
   // This BehaviorSubject can be used to track the user's role throughout the application
   private userRole = new BehaviorSubject<string | null>(null);
@@ -62,10 +77,10 @@ export class AuthService {
     return this.http.post<AuthenticationBean>(this.API_URL + "/auth/login", payload).pipe(
       map(data => {
         this.loggedIn.next(true);
-        this.memberId=data.userDetialsDto.member.memberId;
-        this.setUserRole(data.userDetialsDto.role.roleName);
-        const loginTime = new Date().getTime();
+
+        this.setUserDetailsToSubject(data.userDetialsDto);
         this.authenticateUser(data.userDetialsDto.username, data.token);
+        const loginTime = new Date().getTime();
         sessionStorage.setItem('loginTime', loginTime.toString());
         sessionStorage.setItem('userDetials', JSON.stringify(data.userDetialsDto));
         console.log('JWT Token stored:', data.token);
@@ -76,6 +91,15 @@ export class AuthService {
         throw error;
       })
     );
+  }
+  setUserDetailsToSubject(data: any) {
+      let userDetailData : UserDetails ={
+          userMember: data.member,
+          role: data.role,
+          address: data.address
+        }
+        this.setUserRole(data.role.roleName);
+        this.setUserDetials(userDetailData);
   }
 
   signUp(payload: any): Observable<any> {
@@ -122,6 +146,7 @@ export class AuthService {
     sessionStorage.removeItem('authenticaterUser');
     sessionStorage.removeItem('jwtToken');
     sessionStorage.removeItem('userDetials');
+    sessionStorage.removeItem('newApplicationCount')
     this.router.navigate(['/']);  // Redirect to the home page
   }
 }
