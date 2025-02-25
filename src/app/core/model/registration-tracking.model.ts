@@ -38,7 +38,6 @@ export interface UserMember {
   status: string;
   applicationSts?:string
   middleName: string;
-  phone: string;
 }
 
 export interface ApplHistory {

@@ -1,7 +1,7 @@
 import { Address, Role, UserMember } from "./registration-tracking.model";
 
 export interface UserDetails {
-  userMember: UserMember;
+  member: UserMember;
   role: Role;
   address: Address;
 }

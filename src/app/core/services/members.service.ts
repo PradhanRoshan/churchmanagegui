@@ -50,6 +50,10 @@ export class MembersService {
     );
   }
 
+  updateUserProfile(payload: any) {
+  return this.http.post(this.baseUrl + "/member/update-user-profile", payload);
+  }
+
   reviewApplicationDecision(payload: { memberId: any; role: any; applicationStatus: { statusId: number; statusName: string; }; }) {
     return this.http.post(this.baseUrl + "/member/review-application", payload, this.textResponse);
   }

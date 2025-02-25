@@ -168,11 +168,11 @@
   </div>
 
   <!-- Modal -->
-<div class="modal fade" #newApplModal id="newApplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newApplModalLabel" aria-hidden="true" >
+<div class="modal fade modal-lg" #newApplModal id="newApplModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newApplModalLabel" aria-hidden="true" >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="newApplModalLabel">Review Member Details</h1>
+        <h1 class="modal-title fs-4" id="newApplModalLabel">Review Member Details</h1>
         <button (click)="onModalXClose(selectedObj)" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -181,9 +181,9 @@
           <div class="row g-2">
             <div class="col-md">
 
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext sub-text" id="memberId" [value]="selectedObj?.userMember.memberId" readonly>
-                <label for="memberId">Member ID</label>
+              <div class="form-floating">
+                <input type="text" class="form-control-plaintext sub-text fs-5" id="memberId" [value]="selectedObj?.userMember.memberId" readonly>
+                <label class="fs-6" for="memberId">MEMBER ID</label>
               </div>
 
 
@@ -191,14 +191,14 @@
             <div class="col-md">
               <div class="form-floating">
 
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext sub-text" id="status" [value]="selectedObj?.applicationStatus.statusName" [ngClass]="{
+              <div class="form-floating">
+                <input type="text" class="form-control-plaintext sub-text fs-5" id="status" [value]="selectedObj?.applicationStatus.statusName" [ngClass]="{
                 'text-primary fw-bold': selectedObj?.applicationStatus.statusName === 'Submitted',
                 'text-warning fw-bold': selectedObj?.applicationStatus.statusName === 'In Progress',
                 'text-success fw-bold': selectedObj?.applicationStatus.statusName === 'Approved',
                 'text-danger fw-bold': selectedObj?.applicationStatus.statusName === 'Rejected'
                 }" readonly>
-                <label for="status">Status</label>
+                <label class="fs-6" for="status">STATUS</label>
               </div>
 
               </div>
@@ -208,9 +208,9 @@
           <div class="row g-2">
             <div class="col-md">
 
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext sub-text" id="firstName" [value]="selectedObj?.userMember.firstName" readonly>
-                <label for="firstName">First Name</label>
+              <div class="form-floating">
+                <input type="text" class="form-control-plaintext sub-text fs-5" id="firstName" [value]="selectedObj?.userMember.firstName" readonly>
+                <label class="fs-6" for="firstName">FIRST NAME</label>
               </div>
 
 
@@ -218,26 +218,26 @@
             <div class="col-md">
               <div class="form-floating">
 
-                <div class="form-floating mb-3">
-                  <input type="text" class="form-control-plaintext sub-text" id="lastName" [value]="selectedObj?.userMember.lastName" readonly>
-                  <label for="lastName">Last Name</label>
+                <div class="form-floating">
+                  <input type="text" class="form-control-plaintext sub-text fs-5" id="lastName" [value]="selectedObj?.userMember.lastName" readonly>
+                  <label class="fs-6" for="lastName">LAST NAME</label>
                 </div>
 
               </div>
             </div>
           </div>
 
-          <div class="row g-2">
+          <div class="row g-2 pb-3">
             <div class="col-md">
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext sub-text" id="currentRole" [value]="defaultRoleName" readonly>
-                <label for="currentRole">Current Role</label>
+              <div class="form-floating">
+                <input type="text" class="form-control-plaintext sub-text fs-5" id="currentRole" [value]="defaultRoleName" readonly>
+                <label class="fs-6" for="currentRole">CURRENT ROLE</label>
               </div>
             </div>
             <div class="col-md">
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control-plaintext sub-text" id="currentEmail" [value]="selectedObj?.userMember.emailId" readonly>
-                <label for="currentEmail">Email</label>
+              <div class="form-floating">
+                <input type="text" class="form-control-plaintext sub-text fs-5" id="currentEmail" [value]="selectedObj?.userMember.emailId" readonly>
+                <label class="fs-6" for="currentEmail">EMAIL</label>
               </div>
             </div>
           </div>
@@ -245,11 +245,11 @@
           <div class="row g-2">
             <div class="col-md">
               <div class="form-floating">
-                <select class="form-select sub-text" id="newRole" [(ngModel)]="selectedRoleId" name="newRole" (change)="updateRole($event)" required>
+                <select class="form-select sub-text fs-5" id="newRole" [(ngModel)]="selectedRoleId" name="newRole" (change)="updateRole($event)" required>
                   <option disabled selected value="">Open this select menu</option>
                   <option *ngFor="let role of roles" [value]="role.roleId">{{ role.roleName }}</option>
                 </select>
-                <label for="newRole">Selects New Role</label>
+                <label class="fs-6" for="newRole">Selects New Role</label>
               </div>
             </div>
           </div>

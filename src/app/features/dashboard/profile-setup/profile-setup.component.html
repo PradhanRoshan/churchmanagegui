@@ -1,30 +1,34 @@
 <body>
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <img src="../../../../assets/images/profile-img.jpg" class="rounded-circle mb-3" alt="Profile Picture">
-                <h4>{{fullName}} <span class="badge bg-primary"><i class="bi bi-patch-check-fill"></i></span></h4>
-                <p>Pixel Ltd. | London, UK | Joined {{formateDate(currentUserDetails.userMember.dttmCreate)}}</p>
-                <button class="btn btn-outline-primary btn-sm">Edit Profile</button>
-            </div>
-        </div>
-        
-        <div class="row mt-4">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">Profile</div>
-                    <div class="card-body sub-text">
-                        <p><strong>Name:</strong> {{fullName}}</p>
-                        <p><strong>Role:</strong> {{currentUserDetails.role.roleName}}</p>
-                        <p><strong>Church:</strong> Pixel Ltd.</p>
-                        <p><strong>Email:</strong> {{currentUserDetails.userMember.emailId}}</p>
-                        <p><strong>Phone:</strong> {{currentUserDetails.userMember.phone || "--"}}</p>
-                        <p><strong>Teams:</strong> You are not a member of any teams</p>
-                        <p><strong>Projects:</strong> You are not working on any projects</p>
-                    </div>
-                </div>
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-body text-center">
+        <img src="../../../../assets/images/profile-img.jpg" class="rounded-circle mb-3" alt="Profile Picture">
+        <h4>{{fullName}} <span class="badge bg-primary"><i class="bi bi-patch-check-fill"></i></span></h4>
+        <p>Pixel Ltd. | London, UK | Joined {{formateDate(memberData.member.dttmCreate)}}</p>
+        <!-- <button class="btn btn-outline-primary btn-sm" (click)="openEditProfileModal()">Edit Profile</button> -->
 
-                <!-- <div class="col-md-8">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Edit Profile
+        </button>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">Profile</div>
+          <div class="card-body sub-text">
+            <p><strong>Name:</strong> {{fullName}}</p>
+            <p><strong>Role:</strong> {{memberData.role.roleName}}</p>
+            <p><strong>Church:</strong> Pixel Ltd.</p>
+            <p><strong>Email:</strong> {{memberData.member.emailId}}</p>
+            <p><strong>Phone:</strong> {{memberData.member.phoneNumber || "--"}}</p>
+            <p><strong>Teams:</strong> You are not a member of any teams</p>
+            <p><strong>Projects:</strong> You are not working on any projects</p>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">Activity Stream</div>
                         <div class="card-body">
@@ -44,41 +48,248 @@
                     </div>
                 </div> -->
 
-            </div>
-            
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Activity Stream</div>
-                    <div class="card-body text-center">
+      </div>
 
-                        <div *ngFor="let application of applHistory">
-                            <p><strong>{{ application.applicationType }}</strong></p>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" 
-                                    [ngClass]="{'bg-success': application.applicationStatus === 'Submitted', 'bg-warning': application.applicationStatus === 'In Progress'}" 
-                                    [style.width]="application.applicationStatus === 'Submitted' ? '50%' : '100%'">
-                                    {{ application.applicationStatus }}
-                                </div>
-                            </div>
-                            <p>{{ application.comment }}</p>
-                            <p><small>Last updated by: {{ application.idUserLstUpdt }} on {{ application.dttmLstUpdt }}</small></p>
-                        </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">Activity Stream</div>
+          <div class="card-body text-center">
 
-
-                        <!-- <p>No data to show</p>
-                        <button class="btn btn-outline-secondary">Start your Activity</button> -->
-                    </div>
+            <div *ngFor="let application of applHistory">
+              <p><strong>{{ application.applicationType }}</strong></p>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar"
+                  [ngClass]="{'bg-success': application.applicationStatus === 'Submitted', 'bg-warning': application.applicationStatus === 'In Progress'}"
+                  [style.width]="application.applicationStatus === 'Submitted' ? '50%' : '100%'">
+                  {{ application.applicationStatus }}
                 </div>
-                <!-- <div class="card mt-3">
+              </div>
+              <p>{{ application.comment }}</p>
+              <p><small>Last updated by: {{ application.idUserLstUpdt }} on {{ application.dttmLstUpdt }}</small></p>
+            </div>
+
+
+            <!-- <p>No data to show</p>
+                        <button class="btn btn-outline-secondary">Start your Activity</button> -->
+          </div>
+        </div>
+        <!-- <div class="card mt-3">
                     <div class="card-header">Projects</div>
                     <div class="card-body text-center">
                         <p>No data to show</p>
                         <button class="btn btn-outline-secondary">Start your Projects</button>
                     </div>
                 </div> -->
-            </div>
-        </div>
+      </div>
     </div>
-    
-   
+  </div>
+
+  <!-- Modal -->
+  <!-- Button trigger modal -->
+
+  <!-- Modal -->
+  <div class="modal fade modal-xl" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Profile Setup</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="container " [formGroup]="memberForm" action="">
+
+            <h3>Member Information</h3>
+            <div formGroupName="member">
+
+               <!-- First Row -->
+            <div class="row">
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" readonly class="form-control-plaintext sub-text fs-5" id="floatingPlaintextInput"
+                    placeholder="memberId" value={{memberData.member.memberId}}>
+                  <label class="fs-6" for="floatingPlaintextInput">MEMBER ID</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" readonly class="form-control-plaintext sub-text fs-5" id="floatingPlaintextInput"
+                    placeholder="status" value={{memberData.member.applicationSts}}>
+                  <label class="fs-6" for="floatingPlaintextInput">APPLICATION STATUS</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" readonly class="form-control-plaintext sub-text fs-5" id="floatingPlaintextInput"
+                    placeholder="name@example.com" value={{memberData.member.dttmCreate}}>
+                  <label class="fs-6" for="floatingPlaintextInput">APPLICATION SUBMITTED</label>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Second Row -->
+            <div class="row">
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" readonly class="form-control-plaintext sub-text fs-5 " id="floatingPlaintextInput"
+                    placeholder="firstName" value={{memberData.member.firstName}}>
+                  <label class="fs-6" for="floatingPlaintextInput">FIRST NAME</label>
+                </div>
+              </div>
+
+              <div class="col">
+
+                <div class="form-floating">
+                  <input formControlName="middleName" type="text" class="form-control sub-text fs-5" id="floatingPassword" placeholder="Password">
+                  <label for="floatingPassword">MIDDLE NAME</label>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="form-floating">
+                  <input type="text" readonly class="form-control-plaintext sub-text fs-5 " id="floatingPlaintextInput"
+                    placeholder="lastName" value={{memberData.member.lastName}}>
+                  <label class="fs-6" for="floatingPlaintextInput">LAST NAME</label>
+                </div>
+              </div>
+            </div>
+            
+
+            <!-- third Row -->
+            <div class="row pt-3">
+
+              <div class="col">
+                <div class="form-floating">
+                  <input type="email" readonly class="form-control-plaintext sub-text fs-5 " id="floatingPlaintextInput"
+                    placeholder="name@example.com" value={{memberData.member.emailId}}>
+                  <label class="fs-6" for="floatingPlaintextInput">EMAIL</label>
+                </div>
+              </div>
+
+              <div class="col">
+
+                <div class="form-floating">
+                  <input type="text" readonly class="form-control-plaintext sub-text fs-5"  id="floatingPassword" value={{memberData.role.roleName}}>
+                  <label for="floatingPassword">ROLE</label>
+                </div>
+              </div>
+
+
+              <div class="col">
+
+                <div class="form-floating">
+                  <input formControlName="memberDob" type="date" class="form-control sub-text fs-5" id="floatingPassword" placeholder="Password">
+                  <label for="floatingPassword">DATE OF BIRTH</label>
+                </div>
+              </div>
+            </div>
+            <!-- Fourth Row -->
+            <div class="row pt-3">
+              <div class="col">
+                <div class="form-floating">
+                  <select formControlName="gender" class="form-select sub-text fs-5" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected disabled >Open this select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Both">Both</option>
+                  </select>
+                  <label class="fs-6" for="floatingSelect">GENDER</label>
+                </div>
+              </div>
+
+              <div class="col">
+
+                <div class="form-floating">
+                  <input formControlName="phoneNumber" type="text" class="form-control sub-text fs-5" [maxLength]="10" id="floatingPassword" placeholder="0000000000">
+                  <label for="floatingPassword">PHONE NUMBER</label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating">
+                  <select formControlName="maritalStatus" class="form-select sub-text fs-5" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected disabled >Open this select Marital Status</option>
+                    <option value="Male">Single</option>
+                    <option value="Female">Married</option>
+                    <option value="Both">Divorce</option>
+                  </select>
+                  <label class="fs-6" for="floatingSelect">MARITAL STATUS</label>
+                </div>
+              </div>
+            </div>
+
+
+            </div>
+          
+
+
+        <hr>
+            <h3>Address</h3>
+
+
+<!-- Address first row -->
+ <div formGroupName="address">
+            <div class="row pt-3">
+              <div class="col-8">
+
+                <div class="form-floating">
+                  <input formControlName="street" type="text" class="form-control sub-text fs-5" id="floatingPassword" placeholder="Password">
+                  <label for="floatingPassword">STREET ADDRESS</label>
+                </div>
+              </div>
+              <div class="col">
+
+                <div class="form-floating">
+                  <input formControlName="aptNo" type="text" class="form-control sub-text fs-5" [maxLength]="10" id="floatingPassword" placeholder="0000000000">
+                  <label for="floatingPassword">APT NUMBER</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Address Second Row -->
+
+            <div class="row pt-3">
+              <div class="col">
+
+                <div class="form-floating">
+                  <input formControlName="city" type="text" class="form-control sub-text fs-5" id="floatingPassword" placeholder="Password">
+                  <label for="floatingPassword">CITY</label>
+                </div>
+              </div>
+              <div class="col">
+
+                <div class="form-floating">
+                  <select formControlName="state"  class="form-select sub-text fs-5" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected disabled >Open this select menu</option>
+                     <!-- Dynamically generated options -->
+                    <option *ngFor="let state of states" [value]="state">
+                      {{ state }}
+                    </option>
+                  </select>
+                  <label class="fs-6" for="floatingSelect">STATE</label>
+                </div>
+              </div>
+
+              <div class="col">
+
+                <div class="form-floating">
+                  <input formControlName="zip" type="text" maxlength="5" class="form-control sub-text fs-5" [maxLength]="10" id="floatingPassword" placeholder="0000000000">
+                  <label for="floatingPassword">ZIP CODE</label>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="submitForm()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>

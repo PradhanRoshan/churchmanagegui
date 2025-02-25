@@ -94,7 +94,7 @@ export class AuthService {
   }
   setUserDetailsToSubject(data: any) {
       let userDetailData : UserDetails ={
-          userMember: data.member,
+          member: data.member,
           role: data.role,
           address: data.address
         }

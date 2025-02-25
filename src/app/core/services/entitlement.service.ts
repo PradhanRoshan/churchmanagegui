@@ -90,7 +90,7 @@ export class EntitlementService {
     if (userDetailsObj) {
       const userDetails = JSON.parse(userDetailsObj);
       let userDetailData : UserDetails ={
-        userMember: userDetails.member,
+        member: userDetails.member,
         role: userDetails.role,
         address: userDetails.address
       }
