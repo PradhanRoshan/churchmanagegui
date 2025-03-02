@@ -51,7 +51,7 @@ export class MembersService {
   }
 
   updateUserProfile(payload: any) {
-  return this.http.post(this.baseUrl + "/member/update-user-profile", payload);
+  return this.http.post(this.baseUrl + "/member/update-user-profile", payload, this.textResponse);
   }
 
   reviewApplicationDecision(payload: { memberId: any; role: any; applicationStatus: { statusId: number; statusName: string; }; }) {

@@ -49,4 +49,11 @@ export interface ApplHistory {
   idUserLstUpdt: string;
   dttmCreate: string;
   dttmLstUpdt: string;
-}    
+}  
+
+export interface User {
+  userId: number;
+  username: string;
+  email: string;
+  status: string;
+}

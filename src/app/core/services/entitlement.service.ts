@@ -92,7 +92,8 @@ export class EntitlementService {
       let userDetailData : UserDetails ={
         member: userDetails.member,
         role: userDetails.role,
-        address: userDetails.address
+        address: userDetails.address,
+        user: userDetails.user
       }
       return userDetailData;
     }

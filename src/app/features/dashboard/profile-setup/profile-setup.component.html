@@ -1,15 +1,15 @@
-<body>
+<body *ngIf="isPageReady">
   <div class="container mt-4">
     <div class="card">
       <div class="card-body text-center">
         <img src="../../../../assets/images/profile-img.jpg" class="rounded-circle mb-3" alt="Profile Picture">
         <h4>{{fullName}} <span class="badge bg-primary"><i class="bi bi-patch-check-fill"></i></span></h4>
-        <p>Pixel Ltd. | London, UK | Joined {{formateDate(memberData.member.dttmCreate)}}</p>
-        <!-- <button class="btn btn-outline-primary btn-sm" (click)="openEditProfileModal()">Edit Profile</button> -->
+        <p>Pixel Ltd. | London, UK | Joined {{memberSince}}</p>
+        <button class="btn btn-outline-primary btn-sm" (click)="openEditProfileModal()">Edit Profile</button>
 
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
           Edit Profile
-        </button>
+        </button> -->
       </div>
     </div>
 
@@ -94,10 +94,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">Profile Setup</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" (click)=" closeEditProfileModal()" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="container " [formGroup]="memberForm" action="">
+          <form class="container "  [formGroup]="memberForm">
 
             <h3>Member Information</h3>
             <div formGroupName="member">
@@ -107,21 +107,21 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="text" readonly class="form-control-plaintext sub-text fs-5" id="floatingPlaintextInput"
-                    placeholder="memberId" value={{memberData.member.memberId}}>
+                    placeholder="memberId" formControlName="memberId">
                   <label class="fs-6" for="floatingPlaintextInput">MEMBER ID</label>
                 </div>
               </div>
               <div class="col">
                 <div class="form-floating">
                   <input type="text" readonly class="form-control-plaintext sub-text fs-5" id="floatingPlaintextInput"
-                    placeholder="status" value={{memberData.member.applicationSts}}>
+                    placeholder="status" formControlName="status">
                   <label class="fs-6" for="floatingPlaintextInput">APPLICATION STATUS</label>
                 </div>
               </div>
               <div class="col">
                 <div class="form-floating">
                   <input type="text" readonly class="form-control-plaintext sub-text fs-5" id="floatingPlaintextInput"
-                    placeholder="name@example.com" value={{memberData.member.dttmCreate}}>
+                    placeholder="name@example.com" formControlName="dttmCreate">
                   <label class="fs-6" for="floatingPlaintextInput">APPLICATION SUBMITTED</label>
                 </div>
               </div>
@@ -133,7 +133,7 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="text" readonly class="form-control-plaintext sub-text fs-5 " id="floatingPlaintextInput"
-                    placeholder="firstName" value={{memberData.member.firstName}}>
+                    placeholder="firstName" formControlName="firstName">
                   <label class="fs-6" for="floatingPlaintextInput">FIRST NAME</label>
                 </div>
               </div>
@@ -149,7 +149,7 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="text" readonly class="form-control-plaintext sub-text fs-5 " id="floatingPlaintextInput"
-                    placeholder="lastName" value={{memberData.member.lastName}}>
+                    placeholder="lastName" formControlName="lastName">
                   <label class="fs-6" for="floatingPlaintextInput">LAST NAME</label>
                 </div>
               </div>
@@ -162,7 +162,7 @@
               <div class="col">
                 <div class="form-floating">
                   <input type="email" readonly class="form-control-plaintext sub-text fs-5 " id="floatingPlaintextInput"
-                    placeholder="name@example.com" value={{memberData.member.emailId}}>
+                    placeholder="name@example.com" formControlName="emailId">
                   <label class="fs-6" for="floatingPlaintextInput">EMAIL</label>
                 </div>
               </div>
@@ -170,7 +170,7 @@
               <div class="col">
 
                 <div class="form-floating">
-                  <input type="text" readonly class="form-control-plaintext sub-text fs-5"  id="floatingPassword" value={{memberData.role.roleName}}>
+                  <input type="text" formControlName="role" readonly class="form-control-plaintext sub-text fs-5"  id="floatingPassword">
                   <label for="floatingPassword">ROLE</label>
                 </div>
               </div>
@@ -179,7 +179,7 @@
               <div class="col">
 
                 <div class="form-floating">
-                  <input formControlName="memberDob" type="date" class="form-control sub-text fs-5" id="floatingPassword" placeholder="Password">
+                  <input formControlName="memberDob"  type="date" class="form-control sub-text fs-5" id="floatingPassword" placeholder="Password">
                   <label for="floatingPassword">DATE OF BIRTH</label>
                 </div>
               </div>
@@ -285,7 +285,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" (close)=" closeEditProfileModal()" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" (click)="submitForm()">Submit</button>
         </div>
       </div>

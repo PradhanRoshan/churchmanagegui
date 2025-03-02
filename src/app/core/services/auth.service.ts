@@ -94,12 +94,27 @@ export class AuthService {
   }
   setUserDetailsToSubject(data: any) {
       let userDetailData : UserDetails ={
-          member: data.member,
-          role: data.role,
-          address: data.address
-        }
+        member: data.member,
+        role: data.role,
+        address: data.address,
+        user: data.user
+      }
         this.setUserRole(data.role.roleName);
         this.setUserDetials(userDetailData);
+  }
+
+
+  
+// Get userInfo Details by passing MemberID - use this to update any user detials
+  getUserDetailsInfo(memberId: string) :Observable<UserDetails>{
+       return this.http.get<UserDetails>(this.API_URL + "/user/user-info/" +memberId).pipe(
+        map((data: UserDetails) => {
+          console.log('Data fetched from API:', data);
+          this.setUserDetailsToSubject(data);
+          sessionStorage.setItem('userDetials', JSON.stringify(data));
+          return data;
+        })
+      );
   }
 
   signUp(payload: any): Observable<any> {
