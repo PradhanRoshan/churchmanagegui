@@ -14,6 +14,7 @@ import { SettingsComponent } from './features/dashboard/settings/settings.compon
 import { AuthGuard } from './core/guards/auth.guard';  // ✅ FIXED IMPORT
 import { ApplicationsComponent } from './features/dashboard/applications/applications.component';
 import { ProfileSetupComponent } from './features/dashboard/profile-setup/profile-setup.component';
+import { RoleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -29,8 +30,20 @@ export const routes: Routes = [
         canActivate: [AuthGuard],  // ✅ Ensure AuthGuard is correctly imported
         children: [
             { path: '', component: DashboardComponent },
-            { path: 'applications', component: ApplicationsComponent },
-            { path: 'members', component: MembersComponent },
+            { 
+                path: 'applications', 
+                component: ApplicationsComponent, 
+                canActivate: [RoleGuard], 
+                data: { expectedRole: 'Admin' }
+            },
+            { 
+                path: 'members', 
+                component: MembersComponent, 
+                canActivate: [RoleGuard], 
+                data: { expectedRole: 'Admin' }
+            },
+            // { path: 'applications', component: ApplicationsComponent },
+            // { path: 'members', component: MembersComponent },
             { path: 'events', component: EventsComponent },
             { path: 'donations', component: DonationsComponent },
             { path: 'reports', component: ReportsComponent },
