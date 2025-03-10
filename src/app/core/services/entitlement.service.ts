@@ -73,17 +73,18 @@ export class EntitlementService {
 
   getNewAppCount(): number {
     const storedValue = sessionStorage.getItem('newApplicationCount');
-  
-    // Validate and convert the value to a number
     const newAppCount: number = storedValue !== null && !isNaN(Number(storedValue)) 
       ? Number(storedValue) 
-      : 0; // Default to 0 if invalid
+      : 0;
   
-    // Update count
-    this.membersService.updateNewApplicationCount(newAppCount);
+    // Avoid unnecessary updates
+    if (this.membersService.getCurrentNewAppCount() !== newAppCount) {
+      this.membersService.updateNewApplicationCount(newAppCount);
+    }
   
     return newAppCount;
   }
+  
 
   getCurrentUserDetails(){
     const userDetailsObj = sessionStorage.getItem('userDetials');

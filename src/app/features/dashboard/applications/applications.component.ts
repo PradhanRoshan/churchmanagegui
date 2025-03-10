@@ -48,7 +48,7 @@ export class ApplicationsComponent implements OnInit {
   constructor(private membersService: MembersService, private http: HttpClient) {}
   ngOnInit(): void {
     this.refreshRegTrackingData();
-    this.membersService.newApplicationCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
+    this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
       this.newApplicationCount = count;
     });
   }
@@ -89,7 +89,7 @@ export class ApplicationsComponent implements OnInit {
 
 
   refreshRegTrackingData() {
-    this.membersService.getRegistrationTracking().subscribe((data: RegistrationTracking[]) => {
+    this.membersService.getRegistrationTracking().pipe(takeUntil(this.destroy$)).subscribe((data: RegistrationTracking[]) => {
       this.registrationTracking = data;
       console.log('Data fetched:', this.registrationTracking);
       this.fetchData('new');   
@@ -135,13 +135,13 @@ export class ApplicationsComponent implements OnInit {
     let payload = {
       memberId: selectedObj.userMember.memberId,
       role : selectedObj.role,
-      applicationStatus: { statusId: 2, statusName: 'In Progress' }
+      applicationStatus: selectedObj.applicationStatus
     };
 
     console.log('Payload:', payload);
 
 
-    this.membersService.reviewApplicationDecision(payload).subscribe(response => {
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
       console.log('Application started:', response);
       this.refreshRegTrackingData();
 

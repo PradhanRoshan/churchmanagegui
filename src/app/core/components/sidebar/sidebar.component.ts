@@ -43,20 +43,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     console.log("HIde address", this.hideIfAddIsInvalid)
     console.log("******************isStsvalid", this.isApplStsValid)
 
-    this.membersService.newApplicationCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
-      if(count){
-        this.newApplicationsCount = count;
-      } else {
-        const storedCount = this.entitlementService.getNewAppCount();
-        if(storedCount){
-          this.membersService.updateNewApplicationCount(storedCount);
-          this.newApplicationsCount=storedCount;
-        }
-      }
-      
+    this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
+      console.log("Received newApplicationCount:", count);
+      this.newApplicationsCount = count; // 🔥 Ensures UI updates correctly
     });
 
-    // this.membersService.updateNewApplicationCount(this.entitlementService.getNewAppCount());
   }
 
   logOut() {
