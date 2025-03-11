@@ -4,7 +4,8 @@
       <div class="card-body text-center">
         <img src="../../../../assets/images/profile-img.jpg" class="rounded-circle mb-3" alt="Profile Picture">
         <h4>{{fullName}} <span class="badge bg-primary"><i class="bi bi-patch-check-fill"></i></span></h4>
-        <p>Pixel Ltd. | London, UK | Joined {{memberSince}}</p>
+        <p *ngIf="memberData.address==null">Joined {{memberSince}}</p>
+        <p *ngIf="memberData.address!=null">{{memberData.address.street}} | {{memberData.address.city}}, {{memberData.address.state}} | Joined {{memberSince}}</p>
         <button class="btn btn-outline-primary btn-sm" (click)="openEditProfileModal()">Edit Profile</button>
 
         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
