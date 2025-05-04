@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use './button-styles' as *;
 
+// src/button-styles.scss
 // Setting defult text for sub-text
 .sub-text {
   color:#023047;

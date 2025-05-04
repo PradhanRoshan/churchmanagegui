@@ -58,7 +58,7 @@
         </td>
         <td>{{ app.userMember.dttmCreate }}</td>
         <td>
-          <button (click)="performAction(app, 'Submitted')" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newApplModal">Review</button>
+          <button (click)="performAction(app, 'Submitted')" class="btn button-primary btn-md" data-bs-toggle="modal" data-bs-target="#newApplModal">Review</button>
         </td>
       </tr>
     </tbody>
@@ -258,8 +258,8 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onModalXClose(selectedObj)">Close</button>
-        <button (click)="startApplication(selectedObj)" type="button" data-bs-dismiss="modal" class="btn btn-primary">Reviewed</button>
+        <button type="button" class="btn button-outline btn-md" data-bs-dismiss="modal" (click)="onModalXClose(selectedObj)">Close</button>
+        <button (click)="startApplication(selectedObj)" type="button" data-bs-dismiss="modal" class="btn button-success btn-md">Reviewed</button>
       </div>
     </div>
   </div>
