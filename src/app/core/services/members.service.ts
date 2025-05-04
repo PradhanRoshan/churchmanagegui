@@ -59,7 +59,7 @@ export class MembersService {
   return this.http.post(this.baseUrl + "/member/update-user-profile", payload, this.textResponse);
   }
 
-  reviewApplicationDecision(payload: { memberId: any; role: any; applicationStatus: { statusId: number; statusName: string; }; }) {
+  reviewApplicationDecision(payload: { memberId: string; role: string; applicationStatus: { statusId: number; statusName: string; }; }) {
     return this.http.post(this.baseUrl + "/member/review-application", payload, this.textResponse);
   }
 

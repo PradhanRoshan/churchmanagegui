@@ -15,9 +15,9 @@ import { AuthService } from '../../../core/services/auth.service';
 export class SignupComponent implements OnInit{
 
   signUpForm: FormGroup;
-  isPasswordValid: boolean=true;
-  isUsernameValid: boolean=true;
-  isFormValid: boolean=true;
+  isPasswordValid=true;
+  isUsernameValid=true;
+  isFormValid=true;
 
   constructor(
     private router: Router,
@@ -47,7 +47,7 @@ export class SignupComponent implements OnInit{
     this.isPasswordValid = getFormControlValue(this.signUpForm,"password")===getFormControlValue(this.signUpForm,"confirmPassword")? true:false;
     nullifyEmptyFormFields(this.signUpForm);
     if(this.signUpForm.valid && this.isPasswordValid){
-      let payload ={
+      const payload ={
         firstName: getFormControlValue(this.signUpForm,"firstName"),
         lastName: getFormControlValue(this.signUpForm,"lastName"),
         user:{

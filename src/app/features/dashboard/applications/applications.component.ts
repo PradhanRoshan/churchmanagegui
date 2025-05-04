@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Role, RegistrationTracking } from '../../../core/model/registration-tracking.model';
 import { MembersService } from '../../../core/services/members.service';
@@ -13,7 +13,7 @@ import { FormsModule, } from '@angular/forms';
   templateUrl: './applications.component.html',
   styleUrl: './applications.component.scss'
 })
-export class ApplicationsComponent implements OnInit {
+export class ApplicationsComponent implements OnInit, OnDestroy {
 
   @ViewChild('newApplModal', { static: false }) modal!: ElementRef;
 
@@ -21,13 +21,13 @@ export class ApplicationsComponent implements OnInit {
 
   private destroy$ = new Subject<void>();
 
-  newApplicationCount: number = 0;
+  newApplicationCount = 0;
 
   defaultRoleName: string;
 
 
-  selectedRoleId: string = "";
-  selectedRoleName: string = "";
+  selectedRoleId = "";
+  selectedRoleName = "";
 
 
   roles:Role[] = [
@@ -132,7 +132,7 @@ export class ApplicationsComponent implements OnInit {
 
   startApplication(selectedObj) {
     console.log('Starting application for:', selectedObj);
-    let payload = {
+    const payload = {
       memberId: selectedObj.userMember.memberId,
       role : selectedObj.role,
       applicationStatus: selectedObj.applicationStatus

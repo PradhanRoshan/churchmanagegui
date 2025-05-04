@@ -90,7 +90,7 @@ export class EntitlementService {
     const userDetailsObj = sessionStorage.getItem('userDetials');
     if (userDetailsObj) {
       const userDetails = JSON.parse(userDetailsObj);
-      let userDetailData : UserDetails ={
+      const userDetailData : UserDetails ={
         member: userDetails.member,
         role: userDetails.role,
         address: userDetails.address,

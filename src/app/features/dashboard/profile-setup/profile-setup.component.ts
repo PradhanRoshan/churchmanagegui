@@ -21,7 +21,7 @@ import { Modal } from 'bootstrap';
 export class ProfileSetupComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
-  isPageReady: boolean = false;
+  isPageReady = false;
 
   // List of US states
   states: string[] = [
@@ -37,11 +37,11 @@ export class ProfileSetupComponent implements OnInit, OnDestroy {
     'West Virginia', 'Wisconsin', 'Wyoming'
   ];
 
-  selectedState: string = '';
-  memberId: string = '';
+  selectedState = '';
+  memberId = '';
   memberData: UserDetails = {} as UserDetails;
-  fullName: string = '';
-  memberSince: string = '';
+  fullName = '';
+  memberSince = '';
   applHistory: ApplHistory[] = [];
   memberForm!: FormGroup;
 

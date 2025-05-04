@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TruncatePipe } from "../../pipes/truncate.pipe";
@@ -11,17 +11,17 @@ import { Subject } from 'rxjs';
   templateUrl: './dashboard-header.component.html',
   styleUrl: './dashboard-header.component.scss'
 })
-export class DashboardHeaderComponent implements OnInit{
+export class DashboardHeaderComponent implements OnInit, OnDestroy{
 
   private destroy$ = new Subject<void>();
 
   loggedInUser: string;
-  isUserRoleAdmin: boolean = false;
+  isUserRoleAdmin = false;
 
   // Displaying loggined time
-  loginDuration: string = ''; // Duration in minutes
+  loginDuration = ''; // Duration in minutes
   intervalId: any;
-  currentTime: string = '';
+  currentTime = '';
 
   constructor(private router: Router, 
     private authService: AuthService,

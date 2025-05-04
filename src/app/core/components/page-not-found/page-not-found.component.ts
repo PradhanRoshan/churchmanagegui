@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class PageNotFoundComponent implements OnInit{
 
-  isUserLoggedIn: boolean=false;
+  isUserLoggedIn=false;
   constructor(private authService: AuthService,private router:Router){
 
   }

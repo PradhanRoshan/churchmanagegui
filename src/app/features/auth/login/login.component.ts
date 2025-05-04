@@ -20,9 +20,9 @@ import { EntitlementService } from '../../../core/services/entitlement.service';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  invalidCredentials: boolean = true;
-  isFormValid: boolean = true;
-  isApplStsValid: boolean = false;
+  invalidCredentials = true;
+  isFormValid = true;
+  isApplStsValid = false;
 
 
   constructor(
@@ -51,8 +51,8 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isFormValid = true;
       console.log(this.loginForm.value)
-      let username = getFormControlValue(this.loginForm, "username");
-      let password = getFormControlValue(this.loginForm, "password");
+      const username = getFormControlValue(this.loginForm, "username");
+      const password = getFormControlValue(this.loginForm, "password");
 
       console.log(username + password)
       this.authService.login(this.loginForm.value)

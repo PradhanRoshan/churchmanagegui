@@ -18,12 +18,12 @@ import { EntitlementService } from '../../services/entitlement.service';
 export class SidebarComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
-  loggedInUser: String;
-  newApplicationsCount: number = 0;
-  isUserRoleAdmin: boolean = false;
-  isApplStsValid: boolean = false;
+  loggedInUser: string;
+  newApplicationsCount = 0;
+  isUserRoleAdmin = false;
+  isApplStsValid = false;
   memberId: string;
-  hideIfAddIsInvalid: boolean = false;
+  hideIfAddIsInvalid = false;
 
   constructor(
     private authService: AuthService,

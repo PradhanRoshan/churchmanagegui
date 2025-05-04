@@ -24,15 +24,15 @@ interface User {
 export class MembersComponent implements OnInit {
 
 
-  searchText: string = '';
-  selectedStatus: string = '';
-  selectedRole: string = '';
-  sortColumn: string = '';
-  sortAscending: boolean = true;
-  currentPage: number = 1;
+  searchText = '';
+  selectedStatus = '';
+  selectedRole = '';
+  sortColumn = '';
+  sortAscending = true;
+  currentPage = 1;
 
   // Default page size and available options
-  pageSize: number = 5;
+  pageSize = 5;
   pageSizeOptions: number[] = [5, 10, 15, 20];
 
   registredMembers: RegistrationTracking[] = [];
@@ -58,7 +58,7 @@ export class MembersComponent implements OnInit {
   }
 
   getFullName(data: UserMember) {
-    let middleName = data.middleName != null ? data.middleName : "";
+    const middleName = data.middleName != null ? data.middleName : "";
     return data.firstName + " " + middleName + data.lastName;
   }
 
