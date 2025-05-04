@@ -1,0 +1,111 @@
+// Color variables
+$color-primary: #2CA6C4;
+$color-primary-hover: #1B91AB;
+$color-warning: #F77F00;
+$color-warning-hover: #E65100;
+$color-secondary: #2CA6C4;
+$color-secondary-hover: #1B91AB;
+$color-danger: #e63946;
+$color-danger-hover: #bf0603;
+$color-success: #04AA6D;
+$color-success-hover: #069460;
+$color-outline: #003049;
+$color-white: #FFFFFF;
+
+// Base button
+.button {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.375rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+                border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+// Size modifiers
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
+}
+
+.btn-md {
+//   padding: 0.5rem 1rem;
+//   font-size: 1rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.25rem;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+}
+
+// Button variants
+.button-primary {
+  @extend .button;
+  background-color: $color-primary;
+  color: $color-white;
+
+  &:hover {
+    background-color: $color-primary-hover;
+    color: $color-white;
+  }
+}
+.button-success {
+  @extend .button;
+  background-color: $color-success;
+  color: $color-white;
+
+  &:hover {
+    background-color: $color-success-hover;
+    color: $color-white;
+  }
+}
+
+.button-secondary {
+  @extend .button;
+  background-color: $color-secondary;
+  color: $color-white;
+
+  &:hover {
+    background-color: $color-secondary-hover;
+  }
+}
+.button-warning {
+  @extend .button;
+  background-color: $color-warning;
+  color: $color-white;
+
+  &:hover {
+    background-color: $color-warning-hover;
+  }
+}
+.button-danger {
+  @extend .button;
+  background-color: $color-danger;
+  color: $color-white;
+
+  &:hover {
+    background-color: $color-danger-hover;
+    color: $color-white
+  }
+}
+
+.button-outline {
+  @extend .button;
+  background-color: transparent;
+  border: 1px solid $color-outline;
+  color: $color-outline;
+
+  &:hover {
+    background-color: $color-outline;
+    color: $color-white;
+  }
+}

@@ -62,6 +62,13 @@ export class MembersComponent implements OnInit {
     return data.firstName + " " + middleName + data.lastName;
   }
 
+  deleteUser(user: RegistrationTracking) {
+    console.log('Delete user:', user);
+    }
+  editUser(user: RegistrationTracking) {
+    console.log('Edit user:', user);
+  }
+
     // Sorting function
     sortTable(column: string) {
       if (this.sortColumn === column) {
