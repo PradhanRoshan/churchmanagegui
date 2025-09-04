@@ -43,6 +43,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
   inProgressApplications: any[] = [];
   approvedApplications: any[] = [];
   rejectedApplications: any[] = [];
+  readyApplications: any[] = [];
 
 
   constructor(private membersService: MembersService, private http: HttpClient) {}
@@ -63,6 +64,9 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
         break;
       case 'inprogress':
         this.inProgressApplications = this.registrationTracking.filter(item => item.applicationStatus.statusName === 'In Progress');
+        break;
+      case 'ready':
+        this.readyApplications = this.registrationTracking.filter(item => item.applicationStatus.statusName === 'Ready');
         break;
       case 'rejected':
         this.rejectedApplications = this.registrationTracking.filter(item => item.applicationStatus.statusName === 'Rejected');
@@ -116,9 +120,11 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
           // Handle In Progress action
         console.log('Handling In Progress action for:', data);
         break;
-      case 'Approved':
-          // Handle Approved action
-          console.log('Handling Approved action for:', data);
+      case 'Ready':
+            // Handle Ready action
+            // Open modal to display information and Approve button, including address section
+            this.selectedObj = data;
+          console.log('Handling Ready action for:', data);
           break;
       case 'Rejected':
           // Handle Rejected action   
