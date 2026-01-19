@@ -3,13 +3,13 @@ import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/co
 import { Subject, takeUntil } from 'rxjs';
 import { Role, RegistrationTracking } from '../../../core/model/registration-tracking.model';
 import { MembersService } from '../../../core/services/members.service';
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule, } from '@angular/forms';
 
 @Component({
   selector: 'app-applications',
   standalone:true,
-  imports: [NgFor,NgClass,FormsModule],
+  imports: [NgFor, NgIf,NgClass,FormsModule],
   templateUrl: './applications.component.html',
   styleUrl: './applications.component.scss'
 })
@@ -44,6 +44,8 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
   approvedApplications: any[] = [];
   rejectedApplications: any[] = [];
   readyApplications: any[] = [];
+  modleTitle = '';
+  modleStatus = '';
 
 
   constructor(private membersService: MembersService, private http: HttpClient) {}
@@ -70,9 +72,12 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
         break;
       case 'rejected':
         this.rejectedApplications = this.registrationTracking.filter(item => item.applicationStatus.statusName === 'Rejected');
+       console.log('Rejected this.rejectedApplications',this.rejectedApplications);
         break;
       case 'approved':
+        console.log('Approved tab selected');
         this.approvedApplications = this.registrationTracking.filter(item => item.applicationStatus.statusName === 'Approved');
+        console.log('Approved this.approvedApplications',this.approvedApplications);
         break;
     }
 
@@ -96,7 +101,11 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     this.membersService.getRegistrationTracking().pipe(takeUntil(this.destroy$)).subscribe((data: RegistrationTracking[]) => {
       this.registrationTracking = data;
       console.log('Data fetched:', this.registrationTracking);
-      this.fetchData('new');   
+      this.fetchData('new');
+      this.fetchData('inprogress');
+      this.fetchData('ready');
+      this.fetchData('rejected');
+      this.fetchData('approved');   
     });
 
 
@@ -105,25 +114,34 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
   performAction(data: any, status: string) {
     // console.log('Performing action for:', data);
     console.log('Action:', status);
-
-    
     this.selectedObj = data;
-    
+    this.defaultRoleName = data.role.roleName;
+    this.modleStatus = status;
     switch (status) {
       case 'Submitted':
-        this.defaultRoleName = data.role.roleName;
+        // this.defaultRoleName = data.role.roleName;
+
+        this.modleTitle = 'Review Member Details';
+        
+
           // Handle Submitted action
         console.log('Handling Submitted action for:', data);
 
         break;
       case 'In Progress':
           // Handle In Progress action
+          this.modleTitle = 'Application In Progress';
+          
         console.log('Handling In Progress action for:', data);
         break;
       case 'Ready':
             // Handle Ready action
             // Open modal to display information and Approve button, including address section
-            this.selectedObj = data;
+
+            this.modleTitle = 'Application Ready for Approval';
+            
+
+            // this.selectedObj = data;
           console.log('Handling Ready action for:', data);
           break;
       case 'Rejected':
@@ -157,6 +175,53 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     });
     
     
+  }
+
+  rejectApplication(selectedObj: RegistrationTracking) {
+    console.log('Reject application for:', selectedObj);
+
+    const payload = {
+      memberId: selectedObj.userMember.memberId,
+      role : selectedObj.role,
+      applicationStatus: { statusId: 5, statusName: 'Rejected' }
+    };
+
+    console.log('Payload:', payload);
+
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
+      console.log('Application rejected:', response);
+      this.refreshRegTrackingData();
+      // this.fetchData('rejected'); 
+
+    }, error => {
+      console.error('Error rejecting application:', error);
+      
+
+    });
+
+    
+  }
+  approveApplication(selectedObj: RegistrationTracking) {
+    console.log('Approve application for:', selectedObj);
+    const payload = {
+      memberId: selectedObj.userMember.memberId,
+      role: selectedObj.role, 
+      applicationStatus: { statusId: 4, statusName: 'Approved' }
+    };
+
+    console.log('Payload:', payload);
+
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
+      console.log('Application approved:', response);
+      this.refreshRegTrackingData();
+      // this.fetchData('approved');
+
+    }, error => {
+      console.error('Error approving application:', error);
+      this.refreshRegTrackingData();
+
+    });
+
   }
 
 

@@ -21,6 +21,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   loggedInUser: string;
   newApplicationsCount = 0;
   isUserRoleAdmin = false;
+  isUserRoleAdminAndApproved = false;
   isApplStsValid = false;
   memberId: string;
   hideIfAddIsInvalid = false;
@@ -38,6 +39,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.loggedInUser = this.authService.getAuthenticatedUser();
     this.isUserRoleAdmin = this.entitlementService.isUserRoleAdmin();
     this.isApplStsValid = this.entitlementService.isApplicationStsValid();
+    this.isUserRoleAdminAndApproved = this.isUserRoleAdmin && this.isApplStsValid;
     this.memberId = this.entitlementService.getMemberId();
     this.hideIfAddIsInvalid = this.entitlementService.isAddressValid();
     console.log("HIde address", this.hideIfAddIsInvalid)
