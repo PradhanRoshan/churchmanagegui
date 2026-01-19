@@ -14,7 +14,7 @@ export class EntitlementService {
   ) { }
 
   isApplicationStsValid():boolean {
-    const invalidSts = ['In Progress', 'Rejected', 'Submitted'];
+    const invalidSts = ['In Progress', 'Rejected', 'Submitted', 'Ready'];
     return !invalidSts.includes(this.getApplicationStatus());
   }
 

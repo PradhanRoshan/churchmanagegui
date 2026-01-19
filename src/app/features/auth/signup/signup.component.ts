@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit{
   signUpForm: FormGroup;
   isPasswordValid=true;
   isUsernameValid=true;
+  isEmailValid=true;
   isFormValid=true;
 
   constructor(
@@ -65,6 +66,8 @@ export class SignupComponent implements OnInit{
             this.router.navigate(['/login']);
           } else if(response == "Username is already in use"){
             this.isUsernameValid=false;
+          } else if(response == "Email is already in use"){
+            this.isEmailValid=false;
           }
         },
         error: (e) =>{

@@ -165,6 +165,6 @@ clearFilters() {
   }
 
   getStatusClass(status: string): string {
-    return status === 'Submitted' ? 'text-primary' : status === 'Approved' ? 'text-success' : status === 'Rejected' ? 'text-danger' : 'text-warning';
+    return status === 'Submitted' ? 'text-primary' : status === 'Approved' ? 'text-success' : status === 'Rejected' ? 'text-danger' : status === 'Ready' ? 'text-ready' : 'text-warning';
   }
 }
