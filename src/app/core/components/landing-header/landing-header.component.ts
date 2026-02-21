@@ -36,7 +36,7 @@ export class LandingHeaderComponent implements OnInit{
   }
   
   ngOnInit(): void {
-     
+     console.log("Landing Header Component Initialized");
   }
   
   onSignUpClicked() {

@@ -7,7 +7,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { UserDetails } from '../../../core/model/user-details.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { EntitlementService } from '../../../core/services/entitlement.service';
-import { of, delay, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Modal } from 'bootstrap';
 
 
