@@ -44,15 +44,17 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
   approvedApplications: any[] = [];
   rejectedApplications: any[] = [];
   readyApplications: any[] = [];
-  modleTitle = '';
-  modleStatus = '';
+  modalTitle = '';
+  modalStatus = '';
 
 
   constructor(private membersService: MembersService, private http: HttpClient) {}
   ngOnInit(): void {
     this.refreshRegTrackingData();
-    this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
-      this.newApplicationCount = count;
+    this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (count) => {
+        this.newApplicationCount = count;
+      }
     });
   }
 
@@ -98,14 +100,19 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
 
 
   refreshRegTrackingData() {
-    this.membersService.getRegistrationTracking().pipe(takeUntil(this.destroy$)).subscribe((data: RegistrationTracking[]) => {
-      this.registrationTracking = data;
-      console.log('Data fetched:', this.registrationTracking);
-      this.fetchData('new');
-      this.fetchData('inprogress');
-      this.fetchData('ready');
-      this.fetchData('rejected');
-      this.fetchData('approved');   
+    this.membersService.getRegistrationTracking().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (data: RegistrationTracking[]) => {
+        this.registrationTracking = data;
+        console.log('Data fetched:', this.registrationTracking);
+        this.fetchData('new');
+        this.fetchData('inprogress');
+        this.fetchData('ready');
+        this.fetchData('rejected');
+        this.fetchData('approved');   
+      },
+      error: (error) => {
+        console.error('Error fetching registration tracking data:', error);
+      }
     });
 
 
@@ -116,12 +123,12 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     console.log('Action:', status);
     this.selectedObj = data;
     this.defaultRoleName = data.role.roleName;
-    this.modleStatus = status;
+    this.modalStatus = status;
     switch (status) {
       case 'Submitted':
         // this.defaultRoleName = data.role.roleName;
 
-        this.modleTitle = 'Review Member Details';
+        this.modalTitle = 'Review Member Details';
         
 
           // Handle Submitted action
@@ -130,7 +137,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
         break;
       case 'In Progress':
           // Handle In Progress action
-          this.modleTitle = 'Application In Progress';
+          this.modalTitle = 'Application In Progress';
           
         console.log('Handling In Progress action for:', data);
         break;
@@ -138,7 +145,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
             // Handle Ready action
             // Open modal to display information and Approve button, including address section
 
-            this.modleTitle = 'Application Ready for Approval';
+            this.modalTitle = 'Application Ready for Approval';
             
 
             // this.selectedObj = data;
@@ -165,13 +172,14 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     console.log('Payload:', payload);
 
 
-    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
-      console.log('Application started:', response);
-      this.refreshRegTrackingData();
-
-    }, error => {
-      console.error('Error starting application:', error);
-
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        console.log('Application started:', response);
+        this.refreshRegTrackingData();
+      },
+      error: (error) => {
+        console.error('Error starting application:', error);
+      }
     });
     
     
@@ -188,15 +196,15 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
 
     console.log('Payload:', payload);
 
-    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
-      console.log('Application rejected:', response);
-      this.refreshRegTrackingData();
-      // this.fetchData('rejected'); 
-
-    }, error => {
-      console.error('Error rejecting application:', error);
-      
-
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        console.log('Application rejected:', response);
+        this.refreshRegTrackingData();
+        // this.fetchData('rejected'); 
+      },
+      error: (error) => {
+        console.error('Error rejecting application:', error);
+      }
     });
 
     
@@ -211,19 +219,35 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
 
     console.log('Payload:', payload);
 
-    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
-      console.log('Application approved:', response);
-      this.refreshRegTrackingData();
-      // this.fetchData('approved');
-
-    }, error => {
-      console.error('Error approving application:', error);
-      this.refreshRegTrackingData();
-
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        console.log('Application approved:', response);
+        this.refreshRegTrackingData();
+        // this.fetchData('approved');
+      },
+      error: (error) => {
+        console.error('Error approving application:', error);
+        this.refreshRegTrackingData();
+      }
     });
 
   }
 
+  comment = '';
+
+  onCommentSentClick(arg0: RegistrationTracking) {
+    console.log('Comment sent for:', arg0);
+    // Implement comment sending logic here, e.g., open a modal to enter comments and send to backend
+    console.log('Comment:', this.comment);
+    let payload = {
+      memberId: arg0.userMember.memberId,
+      cmtRole: arg0.role,
+      cmtUserName: arg0.applicationStatus,
+      comment: this.comment
+    };
+
+    console.log('Payload for comment:', payload);
+  }
 
   handleAction(memberId: string) {
     alert(`Action clicked for Member ID: ${memberId}`);
