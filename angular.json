@@ -116,10 +116,10 @@
       }
     }
   },
-  "cli": {
-    "analytics": false,
-    "schematicCollections": [
-      "angular-eslint"
-    ]
-  }
+"cli": {
+  "analytics": false,
+  "schematicCollections": [
+    "@angular-eslint/schematics"
+  ]
+}
 }

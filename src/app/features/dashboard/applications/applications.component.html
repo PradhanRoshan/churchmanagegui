@@ -212,7 +212,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-4" id="newApplModalLabel">{{modleTitle}}</h1>
+        <h1 class="modal-title fs-4" id="newApplModalLabel">{{modalTitle}}</h1>
         <button (click)="onModalXClose(selectedObj)" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -285,7 +285,7 @@
 
 
 
-          <div *ngIf="modleStatus=== 'Submitted'" class="row g-2">
+          <div *ngIf="modalStatus === 'Submitted'" class="row g-2">
             <div class="col-md">
               <div class="form-floating">
                 <select class="form-select sub-text fs-5" id="newRole" [(ngModel)]="selectedRoleId" name="newRole" (change)="updateRole($event)" required>
@@ -297,42 +297,48 @@
             </div>
           </div>
 
-
-           <div *ngIf="modleStatus=== 'In Progress'" class="row g-2">
+           <!-- Display chat history and comment box for "In Progress" status -->
+        @if (modalStatus === 'In Progress' ) {
+           <div class="row g-2">
             <div class="col-md">
               <div class="form-floating">
                 <h3> Chat History </h3>
                 <!-- Chat history content goes here -->
-
-                <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                 @if (allComments.length>0) {
+                <div class="chat-history mb-3" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 4px;">
+                  
+                  @for (item of allComments; track $index) {
+                    <div class="chat-message mb-2">
+                      <small class="text-muted"><strong>{{ item.authorName }}</strong> <strong [ngClass]="getColorBasedOnRole(item.authorRole)"> ({{ item.authorRole }})</strong> - {{ formatChatTimestamp(item.createdAt) }}</small>
+                      <p class="mb-1">{{ item.comments }}</p>
+                    </div>
+                  }                
                 </div>
-
-
+              }
+                <div class="mb-3">
+                  <label for="exampleFormControlTextarea1" class="form-label">Enter Comment</label>
+                  <textarea name="comment" [(ngModel)]="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
               </div>
             </div>
           </div>
-
-
-
-
+        }
         </form>
       </div>
 
       <!-- Modal Footer Buttons -->
-      <div *ngIf="modleStatus=== 'Submitted'" class="modal-footer">
+      <div *ngIf="modalStatus === 'Submitted'" class="modal-footer">
         <button (click)="startApplication(selectedObj)" type="button" data-bs-dismiss="modal" class="btn button-success btn-md">Reviewed</button>
         <button type="button" class="btn button-outline btn-md" data-bs-dismiss="modal" (click)="onModalXClose(selectedObj)">Close</button>
       </div>
 
-      <div *ngIf="modleStatus=== 'In Progress'" class="modal-footer">
-        <button  type="button" data-bs-dismiss="modal" class="btn button-success btn-md">Sent</button>
+      <div *ngIf="modalStatus === 'In Progress'" class="modal-footer">
+        <button type="button" class="btn button-success btn-md" (click)="onCommentSentClick(selectedObj)">Sent</button>
         <button type="button" class="btn button-outline btn-md" data-bs-dismiss="modal" (click)="onModalXClose(selectedObj)">Close</button>
       </div>
 
 
-      <div *ngIf="modleStatus=== 'Ready'" class="modal-footer">
+      <div *ngIf="modalStatus === 'Ready'" class="modal-footer">
         <button (click)="approveApplication(selectedObj)"  type="button" data-bs-dismiss="modal" class="btn button-success btn-md">Approve</button>
         <button (click)="rejectApplication(selectedObj)" type="button" class="btn button-danger btn-md" data-bs-dismiss="modal" (click)="onModalXClose(selectedObj)">Reject</button>
       </div>

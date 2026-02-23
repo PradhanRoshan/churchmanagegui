@@ -1,22 +1,25 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApplHistory } from '../../../core/model/registration-tracking.model';
+import { ApplHistory, RegistrationTracking } from '../../../core/model/registration-tracking.model';
 import { MembersService } from '../../../core/services/members.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { UserDetails } from '../../../core/model/user-details.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { EntitlementService } from '../../../core/services/entitlement.service';
-import { of, delay, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Modal } from 'bootstrap';
+import { Comments } from '../../../core/model/comments.model';
+import { CommentsService } from '../../../core/services/comments.service';
 
 
 @Component({
   selector: 'app-profile-setup',
   standalone: true,
-  imports: [NgClass, ReactiveFormsModule, NgFor, NgIf],
+  imports: [NgClass, ReactiveFormsModule, NgFor, NgIf,FormsModule],
   templateUrl: './profile-setup.component.html',
-  styleUrls: ['./profile-setup.component.scss']
+  styleUrls: ['./profile-setup.component.scss'],
+  providers: [DatePipe],
 })
 export class ProfileSetupComponent implements OnInit, OnDestroy {
 
@@ -44,9 +47,13 @@ export class ProfileSetupComponent implements OnInit, OnDestroy {
   memberSince = '';
   applHistory: ApplHistory[] = [];
   memberForm!: FormGroup;
+  allComments: Comments[] = [];
+  comment = '';
 
   constructor(
     private route: ActivatedRoute,
+     private readonly datePipe: DatePipe,
+     private commentsService: CommentsService,
     private membersService: MembersService,
     private authService: AuthService,
     private entitlementService: EntitlementService,
@@ -58,6 +65,7 @@ export class ProfileSetupComponent implements OnInit, OnDestroy {
     this.memberId = this.entitlementService.getMemberId();
     this.getCurrentUserDetailsData();
     this.getApplicationProgressDetail();
+    this.getAllCommentsForMember(this.memberId);
   }
 
   initializeForm(): void {
@@ -183,6 +191,68 @@ export class ProfileSetupComponent implements OnInit, OnDestroy {
         console.error("Error fetching application history:", error);
       }
     });
+  }
+
+    getAllCommentsForMember(memberId: any) {
+    this.commentsService.getAllCommentsByMemberId(memberId).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response: any[]) => {
+        console.log('Comments fetched:', response);
+        // this.comments = response;
+        this.allComments = response;
+        console.log('All comments for member:', this.allComments);
+      },
+      error: (error) => {
+        console.error('Error fetching comments:', error);
+      }
+    });
+  }
+
+   formatChatTimestamp(value: string | Date): string {
+    if (!value) return '';
+    // Output: 2024-01-15 10:30 AM
+    return this.datePipe.transform(value, 'yyyy-MM-dd hh:mm a') ?? '';
+  }
+
+  
+    onCommentSentClick() {
+      
+      // Implement comment sending logic here, e.g., open a modal to enter comments and send to backend
+      console.log('Comment:', this.comment);
+  
+      let payload = {
+        memberId: this.memberId,
+        rgstrnRqstCmntRole: this.entitlementService.getUserRoleName(),
+        nameRgstrnRqstCmntUser: this.entitlementService.getUserFullName(),
+        textRgstrnRqstCmnt: this.comment
+      };
+  
+      console.log('Payload for comment:', payload);
+      this.commentsService.addComment(payload).pipe(takeUntil(this.destroy$)).subscribe({
+        next: (response) => {
+          console.log('Comment sent successfully:', response);
+          if (response == 'Comments saved successfully') {
+            this.getAllCommentsForMember(this.memberId);
+          }
+          this.comment = '';
+          
+        },
+        error: (error) => {
+          console.error('Error sending comment:', error);
+        }
+      });
+    }
+
+    getColorBasedOnRole(role: string): string {
+    switch (role) {
+      case 'Admin':
+        return 'text-danger';
+      case 'Member':
+        return 'text-success';
+      case 'Volunteer':
+        return 'text-warning';
+      default:
+        return 'text-muted';
+    }
   }
 
   ngOnDestroy() {

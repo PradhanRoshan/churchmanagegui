@@ -3,15 +3,19 @@ import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/co
 import { Subject, takeUntil } from 'rxjs';
 import { Role, RegistrationTracking } from '../../../core/model/registration-tracking.model';
 import { MembersService } from '../../../core/services/members.service';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule, } from '@angular/forms';
+import { EntitlementService } from '../../../core/services/entitlement.service';
+import { CommentsService } from '../../../core/services/comments.service';
+import { Comments } from '../../../core/model/comments.model';
 
 @Component({
   selector: 'app-applications',
-  standalone:true,
-  imports: [NgFor, NgIf,NgClass,FormsModule],
+  standalone: true,
+  imports: [NgFor, NgIf, NgClass, FormsModule],
   templateUrl: './applications.component.html',
-  styleUrl: './applications.component.scss'
+  styleUrl: './applications.component.scss',
+  providers: [DatePipe],
 })
 export class ApplicationsComponent implements OnInit, OnDestroy {
 
@@ -30,29 +34,38 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
   selectedRoleName = "";
 
 
-  roles:Role[] = [
+  roles: Role[] = [
     { roleId: 1, roleName: 'Admin' },
     { roleId: 2, roleName: 'Member' },
     { roleId: 3, roleName: 'Volunteer' }
   ];
   registrationTracking: RegistrationTracking[] = [];
+  allComments: Comments[] = [];
+  comment = '';
 
   selectedObj: RegistrationTracking = null;
-  
+
   newApplications: any[] = [];
   inProgressApplications: any[] = [];
   approvedApplications: any[] = [];
   rejectedApplications: any[] = [];
   readyApplications: any[] = [];
-  modleTitle = '';
-  modleStatus = '';
+  modalTitle = '';
+  modalStatus = '';
 
 
-  constructor(private membersService: MembersService, private http: HttpClient) {}
+  constructor(
+    private readonly datePipe: DatePipe,
+    private membersService: MembersService,
+    private commentsService: CommentsService,
+    private entitlementService: EntitlementService,
+    private http: HttpClient) { }
   ngOnInit(): void {
     this.refreshRegTrackingData();
-    this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
-      this.newApplicationCount = count;
+    this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (count) => {
+        this.newApplicationCount = count;
+      }
     });
   }
 
@@ -72,12 +85,12 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
         break;
       case 'rejected':
         this.rejectedApplications = this.registrationTracking.filter(item => item.applicationStatus.statusName === 'Rejected');
-       console.log('Rejected this.rejectedApplications',this.rejectedApplications);
+        console.log('Rejected this.rejectedApplications', this.rejectedApplications);
         break;
       case 'approved':
         console.log('Approved tab selected');
         this.approvedApplications = this.registrationTracking.filter(item => item.applicationStatus.statusName === 'Approved');
-        console.log('Approved this.approvedApplications',this.approvedApplications);
+        console.log('Approved this.approvedApplications', this.approvedApplications);
         break;
     }
 
@@ -86,26 +99,31 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
   updateRole(event: Event) {
     const target = event.target as HTMLSelectElement;
     const selectedId = target.value;
-  
+
     // Find the selected role by roleId
     const selectedRole = this.roles.find(role => role.roleId.toString() === selectedId);
-  
+
     if (selectedRole && this.selectedObj) {
-      this.selectedObj.role.roleId = selectedRole.roleId; 
+      this.selectedObj.role.roleId = selectedRole.roleId;
       this.selectedObj.role.roleName = selectedRole.roleName; // This updates the displayed role name
     }
-}
+  }
 
 
   refreshRegTrackingData() {
-    this.membersService.getRegistrationTracking().pipe(takeUntil(this.destroy$)).subscribe((data: RegistrationTracking[]) => {
-      this.registrationTracking = data;
-      console.log('Data fetched:', this.registrationTracking);
-      this.fetchData('new');
-      this.fetchData('inprogress');
-      this.fetchData('ready');
-      this.fetchData('rejected');
-      this.fetchData('approved');   
+    this.membersService.getRegistrationTracking().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (data: RegistrationTracking[]) => {
+        this.registrationTracking = data;
+        console.log('Data fetched:', this.registrationTracking);
+        this.fetchData('new');
+        this.fetchData('inprogress');
+        this.fetchData('ready');
+        this.fetchData('rejected');
+        this.fetchData('approved');
+      },
+      error: (error) => {
+        console.error('Error fetching registration tracking data:', error);
+      }
     });
 
 
@@ -116,65 +134,86 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     console.log('Action:', status);
     this.selectedObj = data;
     this.defaultRoleName = data.role.roleName;
-    this.modleStatus = status;
+    this.modalStatus = status;
     switch (status) {
       case 'Submitted':
         // this.defaultRoleName = data.role.roleName;
 
-        this.modleTitle = 'Review Member Details';
-        
+        this.modalTitle = 'Review Member Details';
 
-          // Handle Submitted action
+
+        // Handle Submitted action
         console.log('Handling Submitted action for:', data);
 
         break;
       case 'In Progress':
-          // Handle In Progress action
-          this.modleTitle = 'Application In Progress';
-          
+        // Handle In Progress action
+        this.modalTitle = 'Application In Progress';
+
         console.log('Handling In Progress action for:', data);
+        this.getAllCommentsForMember(data.userMember.memberId);
         break;
       case 'Ready':
-            // Handle Ready action
-            // Open modal to display information and Approve button, including address section
+        // Handle Ready action
+        // Open modal to display information and Approve button, including address section
 
-            this.modleTitle = 'Application Ready for Approval';
-            
+        this.modalTitle = 'Application Ready for Approval';
 
-            // this.selectedObj = data;
-          console.log('Handling Ready action for:', data);
-          break;
+
+        // this.selectedObj = data;
+        console.log('Handling Ready action for:', data);
+        break;
       case 'Rejected':
-          // Handle Rejected action   
-          console.log('Handling Rejected action for:', data);
-          break;
+        // Handle Rejected action   
+        console.log('Handling Rejected action for:', data);
+        break;
       default:
         console.log('Unknown action:', status);
         break;
     }
+  }
+  getAllCommentsForMember(memberId: any) {
+    this.commentsService.getAllCommentsByMemberId(memberId).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response: any[]) => {
+        console.log('Comments fetched:', response);
+        // this.comments = response;
+        this.allComments = response;
+        console.log('All comments for member:', this.allComments);
+      },
+      error: (error) => {
+        console.error('Error fetching comments:', error);
+      }
+    });
+  }
+
+   formatChatTimestamp(value: string | Date): string {
+    if (!value) return '';
+    // Output: 2024-01-15 10:30 AM
+    return this.datePipe.transform(value, 'yyyy-MM-dd hh:mm a') ?? '';
   }
 
   startApplication(selectedObj) {
     console.log('Starting application for:', selectedObj);
     const payload = {
       memberId: selectedObj.userMember.memberId,
-      role : selectedObj.role,
+      role: selectedObj.role,
       applicationStatus: selectedObj.applicationStatus
     };
 
     console.log('Payload:', payload);
 
 
-    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
-      console.log('Application started:', response);
-      this.refreshRegTrackingData();
-
-    }, error => {
-      console.error('Error starting application:', error);
-
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        console.log('Application started:', response);
+        this.refreshRegTrackingData();
+      },
+      error: (error) => {
+        console.error('Error starting application:', error);
+      }
     });
-    
-    
+
+
   }
 
   rejectApplication(selectedObj: RegistrationTracking) {
@@ -182,52 +221,82 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
 
     const payload = {
       memberId: selectedObj.userMember.memberId,
-      role : selectedObj.role,
+      role: selectedObj.role,
       applicationStatus: { statusId: 5, statusName: 'Rejected' }
     };
 
     console.log('Payload:', payload);
 
-    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
-      console.log('Application rejected:', response);
-      this.refreshRegTrackingData();
-      // this.fetchData('rejected'); 
-
-    }, error => {
-      console.error('Error rejecting application:', error);
-      
-
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        console.log('Application rejected:', response);
+        this.refreshRegTrackingData();
+        // this.fetchData('rejected'); 
+      },
+      error: (error) => {
+        console.error('Error rejecting application:', error);
+      }
     });
 
-    
+
   }
   approveApplication(selectedObj: RegistrationTracking) {
     console.log('Approve application for:', selectedObj);
     const payload = {
       memberId: selectedObj.userMember.memberId,
-      role: selectedObj.role, 
+      role: selectedObj.role,
       applicationStatus: { statusId: 4, statusName: 'Approved' }
     };
 
     console.log('Payload:', payload);
 
-    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
-      console.log('Application approved:', response);
-      this.refreshRegTrackingData();
-      // this.fetchData('approved');
-
-    }, error => {
-      console.error('Error approving application:', error);
-      this.refreshRegTrackingData();
-
+    this.membersService.reviewApplicationDecision(payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        console.log('Application approved:', response);
+        this.refreshRegTrackingData();
+        // this.fetchData('approved');
+      },
+      error: (error) => {
+        console.error('Error approving application:', error);
+        this.refreshRegTrackingData();
+      }
     });
 
   }
 
+  
+
+  onCommentSentClick(arg0: RegistrationTracking) {
+    console.log('Comment sent for:', arg0);
+    // Implement comment sending logic here, e.g., open a modal to enter comments and send to backend
+    console.log('Comment:', this.comment);
+
+    let payload = {
+      memberId: arg0.userMember.memberId,
+      rgstrnRqstCmntRole: this.entitlementService.getUserRoleName(),
+      nameRgstrnRqstCmntUser: this.entitlementService.getUserFullName(),
+      textRgstrnRqstCmnt: this.comment
+    };
+
+    console.log('Payload for comment:', payload);
+    this.commentsService.addComment(payload).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (response) => {
+        console.log('Comment sent successfully:', response);
+        if (response == 'Comments saved successfully') {
+          this.getAllCommentsForMember(arg0.userMember.memberId);
+        }
+        this.comment = '';
+        
+      },
+      error: (error) => {
+        console.error('Error sending comment:', error);
+      }
+    });
+  }
 
   handleAction(memberId: string) {
     alert(`Action clicked for Member ID: ${memberId}`);
-    
+
   }
 
   // Close Bootstrap modal programmatically
@@ -236,13 +305,25 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     // bootstrap.Modal.getInstance(modalElement)?.hide();
   }
 
+  getColorBasedOnRole(role: string): string {
+    switch (role) {
+      case 'Admin':
+        return 'text-danger';
+      case 'Member':
+        return 'text-success';
+      case 'Volunteer':
+        return 'text-warning';
+      default:
+        return 'text-muted';
+    }
+  }
 
-  
   // Restore original role when modal is closed or X clicked
   onModalXClose(event) {
     if (this.selectedObj) {
       this.selectedObj.role.roleName = this.defaultRoleName;
       this.selectedRoleId = "";
+      this.comment = '';
     }
   }
 
