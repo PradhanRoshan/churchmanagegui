@@ -33,6 +33,15 @@ export class EntitlementService {
     return roleName === 'Manager' ? true : false;
   }
 
+  getUserFullName(): string {
+    const userDetails = sessionStorage.getItem('userDetials');
+    if (userDetails) {
+      const userDetailsObj = JSON.parse(userDetails);
+      return userDetailsObj.member.firstName + ' ' + userDetailsObj.member.lastName;
+    }
+    return null;
+  }
+
   getUserRoleName() {
     const userDetails = sessionStorage.getItem('userDetials');
     if (userDetails) {

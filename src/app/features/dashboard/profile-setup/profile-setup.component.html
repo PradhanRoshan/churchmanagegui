@@ -65,6 +65,35 @@
                 </div> -->
       </div>
     </div>
+
+     <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">Messages</div>
+          <div class="card-body">
+            <div class="chat-history" style="height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+               @for (item of allComments; track $index) {
+                    <div class="chat-message mb-2">
+                      <small class="text-muted"><strong>{{ item.authorName }}</strong> <strong [ngClass]="getColorBasedOnRole(item.authorRole)"> ({{ item.authorRole }})</strong> - {{ formatChatTimestamp(item.createdAt) }}</small>
+                      <p class="mb-1">{{ item.comments }}</p>
+                    </div>
+                  } 
+            </div>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Type a message..."
+                [(ngModel)]="comment"
+                (keyup.enter)="onCommentSentClick()" 
+              />
+               <button type="button" class="btn button-success btn-md" (click)="onCommentSentClick()">Sent</button>
+               
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Modal -->
@@ -192,9 +221,9 @@
                 <div class="form-floating">
                   <select formControlName="maritalStatus" class="form-select sub-text fs-5" id="floatingSelect" aria-label="Floating label select example">
                     <option selected disabled >Open this select Marital Status</option>
-                    <option value="Male">Single</option>
-                    <option value="Female">Married</option>
-                    <option value="Both">Divorce</option>
+                      <option value="Single">Single</option>
+                      <option value="Married">Married</option>
+                      <option value="Divorced">Divorced</option>
                   </select>
                   <label class="fs-6" for="floatingSelect">MARITAL STATUS</label>
                 </div>
