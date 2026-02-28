@@ -49,6 +49,7 @@ export class ProfileSetupComponent implements OnInit, OnDestroy {
   memberForm!: FormGroup;
   allComments: Comments[] = [];
   comment = '';
+  commentsDisabled = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -158,6 +159,7 @@ export class ProfileSetupComponent implements OnInit, OnDestroy {
           this.fullName = `${this.memberData.member.firstName} ${this.memberData.member.lastName}`;
           this.memberSince = this.formatDate(this.memberData.member.dttmCreate);
           this.initializeForm();
+          this.commentsDisabled = this.memberData.member.applicationSts == 'Rejected' || this.memberData.member.applicationSts == 'Approved';
           this.isPageReady = true;
         } else {
           console.warn("User details reset to null, restoring from session storage.");
@@ -215,6 +217,7 @@ export class ProfileSetupComponent implements OnInit, OnDestroy {
 
   
     onCommentSentClick() {
+      if (this.commentsDisabled) return;
       
       // Implement comment sending logic here, e.g., open a modal to enter comments and send to backend
       console.log('Comment:', this.comment);
