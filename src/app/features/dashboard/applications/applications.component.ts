@@ -8,6 +8,7 @@ import { FormsModule, } from '@angular/forms';
 import { EntitlementService } from '../../../core/services/entitlement.service';
 import { CommentsService } from '../../../core/services/comments.service';
 import { Comments } from '../../../core/model/comments.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-applications',
@@ -59,7 +60,8 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     private membersService: MembersService,
     private commentsService: CommentsService,
     private entitlementService: EntitlementService,
-    private http: HttpClient) { }
+  private router: Router,) { }
+
   ngOnInit(): void {
     this.refreshRegTrackingData();
     this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe({
@@ -163,6 +165,11 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
         // this.selectedObj = data;
         console.log('Handling Ready action for:', data);
         break;
+      case 'Approved':
+        // Handle Approved action
+        console.log('Handling Approved action for:', data);
+        this.router.navigate(['dashboard/applications/', data.userMember.memberId]);
+        break;  
       case 'Rejected':
         // Handle Rejected action   
         console.log('Handling Rejected action for:', data);
