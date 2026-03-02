@@ -1,1 +1,281 @@
-<p>application-details works!</p>
+<div
+  class="container-fluid py-4 px-3 px-lg-4 bg-light cm-page"
+  style="min-height: calc(100vh - 56px - 2rem)"
+>
+  <div class="row">
+    <div class="col-12">
+      <div class="p-3 p-md-4 bg-white shadow-sm rounded-3 border mb-4 cm-topbar">
+        <div
+          class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3"
+        >
+          <button
+            type="button"
+            class="btn button-outline btn-sm rounded-pill px-3 d-inline-flex align-items-center gap-2"
+            (click)="goBack()"
+            aria-label="Go back"
+          >
+            <span aria-hidden="true">←</span>
+            <span class="fw-semibold">Go Back</span>
+          </button>
+
+          <ng-container *ngIf="details as d">
+            <div class="d-flex flex-wrap gap-2 justify-content-end">
+              <span
+                class="badge rounded-pill"
+                [ngClass]="getRoleBadgeClass(d.role?.roleName)"
+              >
+                {{ display(d.role?.roleName) }}
+              </span>
+              <span
+                class="badge rounded-pill"
+                [ngClass]="getStatusBadgeClass(d.userMember?.status)"
+              >
+                {{ display(d.userMember?.status) }}
+              </span>
+              <span
+                class="badge rounded-pill"
+                [ngClass]="getApplicationStatusBadgeClasses()"
+              >
+                {{ getApplicationStatusLabel() }}
+              </span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="details as d; else noDetails">
+    <div class="row g-4">
+      <div class="col-12 col-xl-7">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header cm-card-header cm-card-header--member">
+            <div
+              class="d-flex flex-wrap align-items-center justify-content-between gap-2"
+            >
+              <h5 class="mb-0">Member Information</h5>
+              <span class="text-muted small"
+                >Member ID:
+                <span class="fw-semibold">{{
+                  display(d.userMember?.memberId)
+                }}</span></span
+              >
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Full Name</div>
+                <div class="fw-semibold text-break">
+                  {{ getMemberFullName() }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Email</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.userMember?.emailId) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Phone</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.userMember?.phoneNumber) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Gender</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.userMember?.gender) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">DOB</div>
+                <div class="fw-semibold text-break">
+                  {{ formatDate(d.userMember?.memberDob) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Marital Status</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.userMember?.maritalStatus) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Created Date</div>
+                <div class="fw-semibold text-break">
+                  {{ formatDate(d.userMember?.dttmCreate) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Role</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.role?.roleName) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+          <div class="card-header cm-card-header cm-card-header--address">
+            <h5 class="mb-0">Address</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-8">
+                <div class="text-muted small">Street</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.address?.street) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="text-muted small">Apt</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.address?.aptNo) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="text-muted small">City</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.address?.city) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="text-muted small">State</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.address?.state) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="text-muted small">Zip</div>
+                <div class="fw-semibold text-break">
+                  {{ display(d.address?.zip) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-5">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header cm-card-header cm-card-header--status">
+            <h5 class="mb-0">Application Status</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <div class="text-muted small">Current Status</div>
+                <div class="fw-semibold text-break">
+                  {{ getApplicationStatusLabel() }}
+                </div>
+              </div>
+              <span
+                class="badge rounded-pill"
+                [ngClass]="getApplicationStatusBadgeClasses()"
+              >
+                {{ getApplicationStatusLabel() }}
+              </span>
+            </div>
+            <hr class="my-3" />
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Status ID</div>
+                <div class="fw-semibold">
+                  {{ display(d.applicationStatus?.statusId) }}
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="text-muted small">Member Status</div>
+                <div class="fw-semibold">
+                  {{ display(d.userMember?.status) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+          <div class="card-header cm-card-header cm-card-header--comments">
+            <div class="d-flex align-items-center justify-content-between">
+              <h5 class="mb-0">Comments</h5>
+              <span class="text-muted small">{{ comments.length }} total</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <ng-container *ngIf="hasComments; else noComments">
+              <div
+                class="d-flex flex-column gap-3 overflow-auto"
+                style="max-height: 350px"
+              >
+                <div
+                  class="d-flex"
+                  *ngFor="let c of comments; trackBy: trackByCommentId"
+                  [ngClass]="getCommentRowClass(c)"
+                >
+                  <div
+                    class="p-3 rounded-3 text-break"
+                    [ngClass]="getCommentBubbleClass(c)"
+                    style="max-width: 85%"
+                  >
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                      <span
+                        class="d-inline-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                        [ngClass]="getCommentAvatarClass(c)"
+                        style="width: 28px; height: 28px"
+                      >
+                        <span class="fw-semibold small">{{
+                          getInitials(c.nameRgstrnRqstCmntUser)
+                        }}</span>
+                      </span>
+
+                      <div
+                        class="fw-semibold"
+                        [ngClass]="getCommentAuthorClass(c)"
+                      >
+                        {{ display(c.nameRgstrnRqstCmntUser) }}
+                      </div>
+
+                      <span
+                        class="badge rounded-pill"
+                        [ngClass]="
+                          getCommentRoleBadgeClass(c.rgstrnRqstCmntRole)
+                        "
+                      >
+                        {{ display(c.rgstrnRqstCmntRole) }}
+                      </span>
+
+                      <div
+                        class="small ms-auto"
+                        [ngClass]="getCommentTimestampClass(c)"
+                      >
+                        {{ formatTimestamp(c.timestamp) }}
+                      </div>
+                    </div>
+                    <div class="mb-0 text-break" style="white-space: pre-wrap">
+                      {{ display(c.textRgstrnRqstCmnt) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #noComments>
+              <div class="text-muted">No comments available.</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noDetails>
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="text-muted">
+          No application details found for this member.
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
