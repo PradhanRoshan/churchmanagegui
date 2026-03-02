@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { ApplicationDetailsComponent } from './application-details.component';
 
@@ -8,7 +9,8 @@ describe('ApplicationDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ApplicationDetailsComponent]
+      imports: [ApplicationDetailsComponent],
+      providers: [provideRouter([])]
     })
     .compileComponents();
 

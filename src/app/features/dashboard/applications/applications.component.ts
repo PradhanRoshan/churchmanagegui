@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subject, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
 import { Role, RegistrationTracking } from '../../../core/model/registration-tracking.model';
 import { MembersService } from '../../../core/services/members.service';
 import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
@@ -8,6 +8,7 @@ import { FormsModule, } from '@angular/forms';
 import { EntitlementService } from '../../../core/services/entitlement.service';
 import { CommentsService } from '../../../core/services/comments.service';
 import { Comments } from '../../../core/model/comments.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-applications',
@@ -17,7 +18,7 @@ import { Comments } from '../../../core/model/comments.model';
   styleUrl: './applications.component.scss',
   providers: [DatePipe],
 })
-export class ApplicationsComponent implements OnInit, OnDestroy {
+export class ApplicationsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('newApplModal', { static: false }) modal!: ElementRef;
 
@@ -59,7 +60,10 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     private membersService: MembersService,
     private commentsService: CommentsService,
     private entitlementService: EntitlementService,
-    private http: HttpClient) { }
+    private readonly route: ActivatedRoute,
+    private router: Router,
+  ) { }
+
   ngOnInit(): void {
     this.refreshRegTrackingData();
     this.membersService.newAppCount$.pipe(takeUntil(this.destroy$)).subscribe({
@@ -67,6 +71,57 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
         this.newApplicationCount = count;
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.route.fragment
+      .pipe(
+        takeUntil(this.destroy$),
+        map((fragment) => (fragment ?? '').trim().toLowerCase()),
+        filter((fragment) => !!fragment),
+        distinctUntilChanged(),
+      )
+      .subscribe((fragment) => {
+        this.activateTabFromFragment(fragment);
+      });
+  }
+
+  /**
+   * Activates a Bootstrap tab based on a URL fragment.
+   *
+   * Supported fragments:
+   * - `#new` | `#new-application`
+   * - `#inprogress`
+   * - `#ready`
+   * - `#approved`
+   * - `#rejected`
+   *
+   * Implementation details:
+   * - Uses a programmatic `click()` on the tab button because Bootstrap's
+   *   tab plugin is wired to click events via `data-bs-toggle="tab"`.
+   * - Runs inside `setTimeout(..., 0)` to ensure the tab elements exist after
+   *   Angular finishes rendering.
+   */
+  private activateTabFromFragment(fragment: string): void {
+    const key = fragment;
+
+    const tabButtonIdByFragment: Record<string, string> = {
+      'new': 'new-application-tab',
+      'new-application': 'new-application-tab',
+      'inprogress': 'inprogress-tab',
+      'ready': 'ready-tab',
+      'approved': 'approved-tab',
+      'rejected': 'rejected-tab',
+    };
+
+    const tabButtonId = tabButtonIdByFragment[key];
+    if (!tabButtonId) return;
+
+    // Allow template to settle before clicking.
+    setTimeout(() => {
+      const el = document.getElementById(tabButtonId) as HTMLButtonElement | null;
+      el?.click();
+    }, 0);
   }
 
   fetchData(tab: string) {
@@ -115,18 +170,14 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
       next: (data: RegistrationTracking[]) => {
         this.registrationTracking = data;
         console.log('Data fetched:', this.registrationTracking);
-        this.fetchData('new');
-        this.fetchData('inprogress');
-        this.fetchData('ready');
-        this.fetchData('rejected');
-        this.fetchData('approved');
+        (['new', 'inprogress', 'ready', 'rejected', 'approved'] as const).forEach((tab) => {
+          this.fetchData(tab);
+        });
       },
       error: (error) => {
         console.error('Error fetching registration tracking data:', error);
       }
     });
-
-
   }
 
   performAction(data: any, status: string) {
@@ -163,9 +214,20 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
         // this.selectedObj = data;
         console.log('Handling Ready action for:', data);
         break;
+      case 'Approved':
+        // Handle Approved action
+        console.log('Handling Approved action for:', data);
+        // sessionStorage.setItem('selectedApplicationDetails', JSON.stringify(data));
+        this.router.navigate(['dashboard/applications', data.userMember.memberId], {
+          state: { applicationDetails: data },
+        });
+        break;
       case 'Rejected':
         // Handle Rejected action   
         console.log('Handling Rejected action for:', data);
+         this.router.navigate(['dashboard/applications', data.userMember.memberId], {
+          state: { applicationDetails: data },
+        });
         break;
       default:
         console.log('Unknown action:', status);
@@ -186,7 +248,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
     });
   }
 
-   formatChatTimestamp(value: string | Date): string {
+  formatChatTimestamp(value: string | Date): string {
     if (!value) return '';
     // Output: 2024-01-15 10:30 AM
     return this.datePipe.transform(value, 'yyyy-MM-dd hh:mm a') ?? '';
@@ -264,7 +326,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
 
   }
 
-  
+
 
   onCommentSentClick(arg0: RegistrationTracking) {
     console.log('Comment sent for:', arg0);
@@ -286,7 +348,7 @@ export class ApplicationsComponent implements OnInit, OnDestroy {
           this.getAllCommentsForMember(arg0.userMember.memberId);
         }
         this.comment = '';
-        
+
       },
       error: (error) => {
         console.error('Error sending comment:', error);

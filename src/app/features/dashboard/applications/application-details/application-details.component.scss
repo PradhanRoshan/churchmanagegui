@@ -1,0 +1,112 @@
+:host {
+	--cm-sky: #8ecae6;
+	--cm-teal: #219ebc;
+	--cm-navy: #023047;
+	--cm-amber: #ffb703;
+	--cm-orange: #fb8500;
+}
+
+.cm-page {
+	background: var(--bs-light);
+}
+
+.cm-topbar {
+	border-left: 0.25rem solid var(--cm-teal);
+}
+
+.cm-card-header {
+	border-bottom: 0;
+	font-weight: 600;
+}
+
+.cm-card-header--member {
+	background: var(--cm-sky);
+	color: var(--cm-navy);
+}
+
+.cm-card-header--address {
+	background: var(--cm-teal);
+	color: #fff;
+}
+
+.cm-card-header--status {
+	background: var(--cm-amber);
+	color: var(--cm-navy);
+}
+
+.cm-card-header--comments {
+	background: var(--cm-orange);
+	color: #fff;
+}
+
+.cm-badge-role--admin {
+	background: var(--cm-navy);
+	color: #fff;
+}
+
+.cm-badge-role--other {
+	background: var(--cm-teal);
+	color: #fff;
+}
+
+.cm-badge-status--active {
+	background: var(--cm-teal);
+	color: #fff;
+}
+
+.cm-badge-status--inactive {
+	background: var(--cm-sky);
+	color: var(--cm-navy);
+}
+
+.cm-badge-status--blocked {
+	background: var(--cm-orange);
+	color: #fff;
+}
+
+.cm-badge-app--approved {
+	background: var(--bs-success);
+	color: var(--bs-white);
+}
+
+.cm-badge-app--pending {
+	background: var(--cm-sky);
+	color: var(--cm-navy);
+}
+
+.cm-badge-app--rejected {
+	background: var(--bs-danger);
+	color: var(--bs-white);
+}
+
+.cm-comment-bubble--admin {
+	border-color: var(--cm-navy) !important;
+}
+
+.cm-comment-bubble--other {
+	border-color: var(--cm-teal) !important;
+}
+
+.cm-comment-author--admin {
+	color: var(--cm-navy) !important;
+}
+
+.cm-comment-avatar--admin {
+	background: var(--cm-sky);
+	color: var(--cm-navy);
+}
+
+.cm-comment-avatar--other {
+	background: var(--cm-teal);
+	color: #fff;
+}
+
+.cm-comment-role--admin {
+	background: var(--cm-sky);
+	color: var(--cm-navy);
+}
+
+.cm-comment-role--other {
+	background: var(--cm-sky);
+	color: var(--cm-navy);
+}
