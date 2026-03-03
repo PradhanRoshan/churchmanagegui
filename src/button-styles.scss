@@ -104,3 +104,23 @@ $color-white: #FFFFFF;
     color: $color-white;
   }
 }
+
+  /* Pagination theming (scoped to Members page) */
+  .pagination {
+    .page-link {
+      color: $color-outline;
+      border-color: $color-outline;
+    }
+
+    .page-link:hover {
+      color: #fff;
+      background-color: $color-outline;
+      border-color: $color-outline;
+    }
+
+    .page-item.active .page-link {
+      color: #fff;
+      background-color:$color-primary;
+      border-color:$color-outline;
+    }
+  }

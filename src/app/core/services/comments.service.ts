@@ -30,11 +30,12 @@ export class CommentsService {
 
   getAllCommentsByMemberId(memberId: string) {
     return this.http.get<Comments[]>(this.baseUrl + `/comments/getComments/${memberId}`).pipe(
-    map(data => data.map(this.mapCommentDtoToComment.bind(this)))
+    map(data => data.map(this.mapCommentEventToComment.bind(this)))
   );
   }
 
-  mapCommentDtoToComment(data): Comments {
+
+  mapCommentEventToComment(data): Comments {
     return {
       id: data.id,
       authorName: data.nameRgstrnRqstCmntUser,
